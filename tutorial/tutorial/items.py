@@ -2,11 +2,16 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
-
+#from scrapy.item import Item, Field
 import scrapy
+from dataclasses import dataclass
 
 
 class TutorialItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    name = scrapy.Field()
+    description = scrapy.Field()
+    old_price = scrapy.Field()
+    current_price = scrapy.Field()
+    link = scrapy.Field()
+    image = scrapy.Field()
+
