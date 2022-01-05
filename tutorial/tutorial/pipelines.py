@@ -42,6 +42,6 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].insert(dict(item))
+        self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
         logging.debug("Post added to MongoDB")
         return item
