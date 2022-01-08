@@ -3,6 +3,7 @@ import scrapy
 import re
 from typing import Optional
 from tutorial.items import TutorialItem
+import datetime as dt
 
 def parse_price(price: str) -> Optional[int]:
   if not price:
@@ -19,20 +20,20 @@ class QuotesSpider(scrapy.Spider):
 
     def parse_result(self, response):
         for product in response.css('div.catalog-product'):
-            item = TutorialItem()
 
             name, *description = product.css('a.catalog-product__name span::text').getall()
             description = description[0].strip("[]") if description else None
             link = response.urljoin(product.css('a.catalog-product__name::attr(href)').get())
 
-            item['name'] = name
-            item['description'] = description
-            item['old_price'] = parse_price(product.css('div.catalog-product__price-old::text').get())
-            item['current_price'] = parse_price(product.css('div.catalog-product__price-actual::text').get())
-            item['link'] = link
-            item['image'] = product.css('div.catalog-product__image img::attr(data-src)').get()
-
-            yield item
+            yield TutorialItem(
+                name=name,
+                description=description,
+                full_price=parse_price(product.css('div.catalog-product__price-old::text').get()),
+                history_price=[(parse_price(product.css('div.catalog-product__price-actual::text').get()),
+                               (dt.datetime.utcnow() + dt.timedelta(hours=5)).strftime("%D %H:%M"))],
+                link=link,
+                image=product.css('div.catalog-product__image img::attr(data-src)').get(),
+            )
 
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
         if next_page is not None:

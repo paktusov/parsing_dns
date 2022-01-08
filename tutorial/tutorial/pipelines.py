@@ -42,6 +42,10 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
-        logging.debug("Post added to MongoDB")
+        exist = self.db[self.collection_name].find_one({"link": dict(item)["link"]})
+        if not exist:
+            self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
+            logging.debug("Item added to MongoDB")
+        else:
+            logging.debug("Item duplicates")
         return item

@@ -10,8 +10,8 @@ from dataclasses import dataclass
 class TutorialItem(scrapy.Item):
     name = scrapy.Field()
     description = scrapy.Field()
-    old_price = scrapy.Field()
-    current_price = scrapy.Field()
+    full_price = scrapy.Field()
+    history_price = scrapy.Field()
     link = scrapy.Field()
     image = scrapy.Field()
 
