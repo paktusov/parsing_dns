@@ -26,6 +26,7 @@ class QuotesSpider(scrapy.Spider):
             link = response.urljoin(product.css('a.catalog-product__name::attr(href)').get())
 
             yield TutorialItem(
+                _id=product.css('a.catalog-product__name::attr(href)').get().strip("/").split("/")[-1],
                 name=name,
                 description=description,
                 full_price=parse_price(product.css('div.catalog-product__price-old::text').get()),

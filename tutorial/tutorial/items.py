@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 
 class TutorialItem(scrapy.Item):
+    _id = scrapy.Field()
     name = scrapy.Field()
     description = scrapy.Field()
     full_price = scrapy.Field()

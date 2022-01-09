@@ -42,15 +42,14 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        exist = self.db[self.collection_name].find_one({"link": dict(item)["link"]})
-        id = exist
+        exist = self.db[self.collection_name].find_one({"_id": dict(item)["_id"]})
         if not exist:
             self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
             logging.debug("Item added to MongoDB")
         else:
             if exist["history_price"][-1][0] != item["history_price"][-1][0]:
                 exist["history_price"].append(item["history_price"][-1])
-                self.db[self.collection_name].find_one_and_replace({"link": dict(item)["link"]},exist)
+                self.db[self.collection_name].find_one_and_replace({"_id": dict(item)["id"]}, exist)
                 logging.debug("Item update to MongoDB")
             else:
                 logging.debug("Item duplicates")
