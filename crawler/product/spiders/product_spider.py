@@ -10,8 +10,8 @@ def parse_price(price: str) -> Optional[int]:
       return None
   return int(re.sub(r"\D+", "", price))
 
-class QuotesSpider(scrapy.Spider):
-    name = "markdown"
+class ProductSpider(scrapy.Spider):
+    name = "product"
     i = 1
     def start_requests(self):
         url = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
