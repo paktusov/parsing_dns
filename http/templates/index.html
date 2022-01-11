@@ -1,0 +1,15 @@
+<!doctype html>
+<head>
+  <title>Markdown</title>
+</head>
+
+<body>
+  <div>
+    <h1>Markdown</h1>
+    {% for product in products %}
+      <li>
+        <a href="{{ product.link }}">{{ product.name }}</a>(Current price: {{ product.history_price[-1][0] }} | Full price: {{product.full_price}} </a>)
+      </li>
+    {% endfor %}
+  </div>
+</body>
