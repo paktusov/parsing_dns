@@ -7,8 +7,10 @@ class Product(db.Document):
     description = db.StringField(max_length=300)
     full_price = db.IntField()
     history_price = db.ListField()
-    link = db.URLField()
+    link = db.URLField(required=True)
     image = db.URLField()
+    last_update = db.db.DateTimeField(required=True)
+    last_seen = db.db.DateTimeField(required=True)
 
     meta = {
         'collection': 'dns_goods',
