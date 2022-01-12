@@ -9,8 +9,8 @@ class Product(db.Document):
     history_price = db.ListField()
     link = db.URLField(required=True)
     image = db.URLField()
-    last_update = db.db.DateTimeField(required=True)
-    last_seen = db.db.DateTimeField(required=True)
+    last_update = db.DateTimeField(required=True)
+    last_seen = db.DateTimeField(required=True)
 
     meta = {
         'collection': 'dns_goods',

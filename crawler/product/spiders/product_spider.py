@@ -1,9 +1,12 @@
+import datetime as dt
+import pytz
 from scrapy_selenium import SeleniumRequest
 import scrapy
 import re
 from typing import Optional
 from product.items import ProductItem
-import datetime as dt
+
+tz = pytz.timezone("Asia/Yekaterinburg")
 
 def parse_price(price: str) -> Optional[int]:
   if not price:
@@ -31,11 +34,12 @@ class ProductSpider(scrapy.Spider):
                 description=description,
                 full_price=parse_price(product.css('div.catalog-product__price-old::text').get()),
                 history_price=[(parse_price(product.css('div.catalog-product__price-actual::text').get()),
-                               (dt.datetime.utcnow() + dt.timedelta(hours=5)).strftime("%D %H:%M"))],
+                                dt.datetime.now(tz=tz).isoformat())],
                 link=link,
                 image=product.css('div.catalog-product__image img::attr(data-src)').get(),
-                last_update=(dt.datetime.utcnow() + dt.timedelta(hours=5)).strftime("%D %H:%M"),
-                last_seen=(dt.datetime.utcnow() + dt.timedelta(hours=5)).strftime("%D %H:%M"),
+                last_update=dt.datetime.
+                    now(tz=tz).isoformat(),
+                last_seen=dt.datetime.now(tz=tz).isoformat(),
             )
 
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()

@@ -51,10 +51,10 @@ class MongoPipeline(object):
                 exist["history_price"].append(item["history_price"][-1])
                 exist["last_update"] = item["last_update"]
                 exist["last_seen"] = item["last_seen"]
-                self.db[self.collection_name].find_one_and_replace({"_id": dict(item)["id"]}, exist)
+                self.db[self.collection_name].find_one_and_replace({"_id": dict(item)["_id"]}, exist)
                 logging.debug("Item update to MongoDB")
             else:
                 exist["last_seen"] = item["last_seen"]
-                self.db[self.collection_name].find_one_and_replace({"_id": dict(item)["id"]}, exist)
+                self.db[self.collection_name].find_one_and_replace({"_id": dict(item)["_id"]}, exist)
                 logging.debug("Item duplicates")
         return item
