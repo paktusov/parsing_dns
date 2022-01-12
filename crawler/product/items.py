@@ -15,4 +15,5 @@ class ProductItem(scrapy.Item):
     history_price = scrapy.Field()
     link = scrapy.Field()
     image = scrapy.Field()
+    last_update = scrapy.Field()
 
