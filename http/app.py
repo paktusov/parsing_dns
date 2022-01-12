@@ -14,7 +14,7 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    products = Product.objects().order_by('name')
+    products = Product.objects().order_by('-last_update')
     return render_template('index.html', products=products)
 
 if __name__ == "__main__":
