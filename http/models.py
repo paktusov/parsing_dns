@@ -3,8 +3,8 @@ from flask_mongoengine import MongoEngine
 db = MongoEngine()
 
 class Product(db.Document):
-    name = db.StringField(max_length=30, required=True)
-    description = db.StringField(max_length=300)
+    name = db.StringField(required=True)
+    description = db.StringField()
     full_price = db.IntField()
     history_price = db.ListField()
     link = db.URLField(required=True)
