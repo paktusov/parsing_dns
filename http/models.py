@@ -3,6 +3,7 @@ from flask_mongoengine import MongoEngine
 db = MongoEngine()
 
 class Product(db.Document):
+    _id = db.ObjectIdField()
     name = db.StringField(required=True)
     description = db.StringField()
     full_price = db.IntField()
