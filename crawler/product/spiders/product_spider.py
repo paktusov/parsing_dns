@@ -34,6 +34,7 @@ class ProductSpider(scrapy.Spider):
                                (dt.datetime.utcnow() + dt.timedelta(hours=5)).strftime("%D %H:%M"))],
                 link=link,
                 image=product.css('div.catalog-product__image img::attr(data-src)').get(),
+                last_update=(dt.datetime.utcnow() + dt.timedelta(hours=5)).strftime("%D %H:%M"),
             )
 
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
