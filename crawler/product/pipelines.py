@@ -42,7 +42,8 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        exist = self.db[self.collection_name].find_one({"_id": dict(item)["_id"]})
+        id = dict(item)["_id"]
+        exist = self.db[self.collection_name].find_one({"_id": id})
         if not exist:
             self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
             logging.debug("Item added to MongoDB")
@@ -51,10 +52,10 @@ class MongoPipeline(object):
                 exist["history_price"].append(item["history_price"][-1])
                 exist["last_update"] = item["last_update"]
                 exist["last_seen"] = item["last_seen"]
-                self.db[self.collection_name].find_one_and_replace({"_id": dict(item)["_id"]}, exist)
+                self.db[self.collection_name].find_one_and_replace({"_id": id}, exist)
                 logging.debug("Item update to MongoDB")
             else:
                 exist["last_seen"] = item["last_seen"]
-                self.db[self.collection_name].find_one_and_replace({"_id": dict(item)["_id"]}, exist)
+                self.db[self.collection_name].find_one_and_replace({"_id": id}, exist)
                 logging.debug("Item duplicates")
         return item

@@ -13,12 +13,10 @@ app.debug = True
 
 @app.route('/')
 def index():
-    products = db[collection_name].find().sort("last_update", pymongo.DESCENDING)
-#    products = Product.objects().order_by('-last_update')
-#    for product in products:
-#        product.last_seen = dt.datetime.fromisoformat(product.last_seen)
-#        product.last_update = dt.datetime.fromisoformat(product.last_update)
-#        product.save()
+    products = list(db[collection_name].find().sort("last_update", pymongo.DESCENDING))
+    for i in range(len(products)):
+#        products[i]['last_seen'] = dt.datetime.fromisoformat(products[i]['last_seen']).strf("%Y.%m.%d")
+        products[i]['last_update'] = dt.datetime.fromisoformat(products[i]['last_update']).strftime("%Y.%m.%d %H:%M")
     return render_template('index.html', products=products)
 
 if __name__ == "__main__":

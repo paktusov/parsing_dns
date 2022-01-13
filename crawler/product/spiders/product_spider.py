@@ -27,19 +27,19 @@ class ProductSpider(scrapy.Spider):
             name, *description = product.css('a.catalog-product__name span::text').getall()
             description = description[0].strip("[]") if description else None
             link = response.urljoin(product.css('a.catalog-product__name::attr(href)').get())
+            now = dt.datetime.now().isoformat()
 
             yield ProductItem(
-                _id=product.css('a.catalog-product__name::attr(href)').get().strip("/").split("/")[-1],
+                _id=link.strip("/").split("/")[-1],
                 name=name,
                 description=description,
                 full_price=parse_price(product.css('div.catalog-product__price-old::text').get()),
                 history_price=[(parse_price(product.css('div.catalog-product__price-actual::text').get()),
-                                dt.datetime.now(tz=tz).isoformat())],
+                                now)],
                 link=link,
                 image=product.css('div.catalog-product__image img::attr(data-src)').get(),
-                last_update=dt.datetime.
-                    now(tz=tz).isoformat(),
-                last_seen=dt.datetime.now(tz=tz).isoformat(),
+                last_update=now,
+                last_seen=now,
             )
 
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
