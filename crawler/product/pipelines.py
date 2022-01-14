@@ -1,3 +1,8 @@
+from itemadapter import ItemAdapter
+import logging
+import pymongo
+
+
 class MongoPipeline(object):
     collection_name = 'dns_goods'
 

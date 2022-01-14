@@ -1,3 +1,6 @@
+import scrapy
+
+
 class ProductItem(scrapy.Item):
     _id = scrapy.Field()
     name = scrapy.Field()
