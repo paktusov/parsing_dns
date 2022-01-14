@@ -9,15 +9,14 @@ db = client['parsing_dns']
 collection_name = 'dns_goods'
 app.debug = True
 
-#db.init_app(app)
 
 @app.route('/')
 def index():
     products = list(db[collection_name].find().sort("last_update", pymongo.DESCENDING))
     for i in range(len(products)):
-#        products[i]['last_seen'] = dt.datetime.fromisoformat(products[i]['last_seen']).strf("%Y.%m.%d")
         products[i]['last_update'] = dt.datetime.fromisoformat(products[i]['last_update']).strftime("%Y.%m.%d %H:%M")
     return render_template('index.html', products=products)
+
 
 if __name__ == "__main__":
     app.run()

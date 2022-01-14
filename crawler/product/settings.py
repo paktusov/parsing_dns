@@ -10,11 +10,8 @@ from shutil import which
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = 'product'
-
 SPIDER_MODULES = ['product.spiders']
 NEWSPIDER_MODULE = 'product.spiders'
-
-
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
@@ -54,8 +51,7 @@ ROBOTSTXT_OBEY = False
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy_selenium.SeleniumMiddleware': 800
-#    'tutorial.middlewares.TutorialDownloaderMiddleware': 543,
+    'scrapy_selenium.SeleniumMiddleware': 800,
 }
 
 # Enable or disable extensions
@@ -69,7 +65,6 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     'product.pipelines.MongoPipeline': 300,
 }
-
 MONGO_URI = 'mongodb://localhost:2717'
 MONGO_DATABASE = 'parsing_dns'
 
@@ -96,4 +91,4 @@ MONGO_DATABASE = 'parsing_dns'
 
 SELENIUM_DRIVER_NAME = 'firefox'
 SELENIUM_COMMAND_EXECUTOR = 'http://localhost:4444/wd/hub'
-SELENIUM_DRIVER_ARGUMENTS=['-headless']
+SELENIUM_DRIVER_ARGUMENTS = ['-headless']

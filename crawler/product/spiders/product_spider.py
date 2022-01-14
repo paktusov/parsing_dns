@@ -1,25 +1,25 @@
+from typing import Optional
 import datetime as dt
 import pytz
-from scrapy_selenium import SeleniumRequest
 import scrapy
 import re
-from typing import Optional
+from scrapy_selenium import SeleniumRequest
 from product.items import ProductItem
 
-tz = pytz.timezone("Asia/Yekaterinburg")
 
 def parse_price(price: str) -> Optional[int]:
-  if not price:
-      return None
-  return int(re.sub(r"\D+", "", price))
+    if not price:
+        return None
+    return int(re.sub(r"\D+", "", price))
+
 
 class ProductSpider(scrapy.Spider):
     name = "product"
     i = 1
+
     def start_requests(self):
         url = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
         yield SeleniumRequest(url=url, callback=self.parse_result, cookies={'city_path': 'chelyabinsk'})
-
 
     def parse_result(self, response):
         for product in response.css('div.catalog-product'):
@@ -48,4 +48,3 @@ class ProductSpider(scrapy.Spider):
             self.i += 1
             next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
             yield SeleniumRequest(url=next_page, callback=self.parse_result, cookies={'city_path': 'chelyabinsk'})
-
