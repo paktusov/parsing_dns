@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Markdown{% endblock %}</title>
+    <title>{% block title %}{{title}}{% endblock %}</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   </head>
   <body>
     <nav style="background-color: #e0e0e0;">
       <div class=container>
-        <p class="navbar-brand">Markdown</p>
+        <p class="navbar-brand">{{header}}</p>
       </div>
     </nav>
     <main>

@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% block title %}Markdown{% endblock %}
-
 {% block content %}
     {% for product in products %}
         <div class="row">
@@ -10,9 +8,9 @@
             </div>
              <div class="col-sm-8">
                 <b><a class="p-0 text-dark" href="{{ product.link }}">{{ product.name }}</a></b><br>
-                Description: {{product.description}}<br>
-                {{ product.history_price[-1][0] }} р. | Full price: {{product.full_price}}<br>
-                Last update: {{product.last_update}}
+                {{product.description}}<br>
+                {{ product.history_price[-1][0] }} р. | {{product.full_price}}<br>
+                {{product.last_update}}
             </div>
         </div>
     {% endfor %}
