@@ -1,22 +1,17 @@
-<!doctype html>
-<head>
-  <title>Markdown</title>
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% extends "base.html" %}
 
-<body>
-  <div class=page>
-    <h1>Markdown</h1>
+{% block content %}
     {% for product in products %}
-      <div class=prod>
-        <li>
-          <a href="{{ product.link }}">{{ product.name }}</a><br>
-          Description: {{product.description}}<br>
-          Current price: {{ product.history_price[-1][0] }} | Full price: {{product.full_price}} |
-          Last update: {{product.last_update}}
-
-        </li>
-      </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="{{product.image}}">
+            </div>
+             <div class="col-sm-8">
+                <b><a class="p-0 text-dark" href="{{ product.link }}">{{ product.name }}</a></b><br>
+                {{product.description}}<br>
+                {{ product.history_price[-1][0] }} р. | {{product.full_price}}<br>
+                {{product.last_update}}
+            </div>
+        </div>
     {% endfor %}
-  </div>
-</body>
+{% endblock %}
