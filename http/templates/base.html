@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Markdown</title>
+    <title>{% block title %}Markdown{% endblock %}</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   </head>
   <body>
     <main>
+
       <div class=container>
         {% block content %}
         {% endblock %}

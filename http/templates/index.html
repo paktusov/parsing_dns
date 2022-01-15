@@ -1,14 +1,21 @@
 {% extends "base.html" %}
-{% block title %}Markdown{% endblock %}
+
 {% block header %}Markdown{% endblock %}
+{% block title %}Markdown{% endblock %}
+
 {% block content %}
     <h1>Markdown</h1>
     {% for product in products %}
-        <li>
-            <a href="{{ product.link }}">{{ product.name }}</a><br>
-            Description: {{product.description}}<br>
-            Current price: {{ product.history_price[-1][0] }} | Full price: {{product.full_price}} |
-            Last update: {{product.last_update}}
-        </li>
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="{{product.image}}">
+            </div>
+             <div class="col-sm-8">
+                <b><a class="p-0 text-dark" href="{{ product.link }}">{{ product.name }}</a></b><br>
+                Description: {{product.description}}<br>
+                Current price: {{ product.history_price[-1][0] }} | Full price: {{product.full_price}}<br>
+                Last update: {{product.last_update}}
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}
