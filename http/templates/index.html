@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
-{% block header %}Markdown{% endblock %}
 {% block title %}Markdown{% endblock %}
 
 {% block content %}
-    <h1>Markdown</h1>
     {% for product in products %}
         <div class="row">
             <div class="col-sm-2">
@@ -13,7 +11,7 @@
              <div class="col-sm-8">
                 <b><a class="p-0 text-dark" href="{{ product.link }}">{{ product.name }}</a></b><br>
                 Description: {{product.description}}<br>
-                Current price: {{ product.history_price[-1][0] }} | Full price: {{product.full_price}}<br>
+                {{ product.history_price[-1][0] }} р. | Full price: {{product.full_price}}<br>
                 Last update: {{product.last_update}}
             </div>
         </div>

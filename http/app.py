@@ -10,6 +10,7 @@ collection_name = 'dns_goods'
 app.debug = True
 
 
+
 @app.route('/')
 def index():
     products = list(db[collection_name].find().sort("last_update", pymongo.DESCENDING))
@@ -19,4 +20,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
