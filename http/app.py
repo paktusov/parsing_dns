@@ -17,7 +17,7 @@ def index():
     header = 'Markdown'
     count = db[collection_name].find().count()
     page = request.args.get('page', 1, type=int)
-    per_page = 20
+    per_page = 30
     pages = math.ceil(count // per_page)
     offset = (page - 1) * per_page
     limit = per_page
