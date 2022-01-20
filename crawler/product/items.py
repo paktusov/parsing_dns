@@ -11,3 +11,4 @@ class ProductItem(scrapy.Item):
     image = scrapy.Field()
     last_update = scrapy.Field()
     last_seen = scrapy.Field()
+    removed = scrapy.Field()

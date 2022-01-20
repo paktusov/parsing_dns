@@ -2,22 +2,21 @@
 
 {% block content %}
     {% for product in products %}
-        <div class="row">
-            <div class="col-sm-2">
-                <img src="{{product.image}}">
-            </div>
-             <div class="col-sm-8">
-                <b><a class="p-0 text-dark" href="{{ product.link }}">{{ product.name }}</a></b><br>
-                {{product.description}}<br>
-                {{ product.history_price[-1][0] }} р. | {{product.full_price}} р.<br>
-                {{product.last_update}}
-            </div>
-        </div>
+        {% if product.removed %}
+            <div class="row removed" >
+        {% else %}
+            <div class="row" >
+        {% endif %}
+                <div class="col-sm-2">
+                    <img src="{{product.image}}">
+                </div>
+                <div class="col-sm-8">
+                    <b><a class="p-0 text-dark" target="_blank" href="{{ product.link }}">{{ product.name }}</a></b><br>
+                    {{product.description}}<br>
+                    {{ product.history_price[-1][0] }} р. | {{product.full_price}} р.<br>
+                    {{product.last_update}}
+                </div>
+<           </div>
     {% endfor %}
     {% include "paginator.html" %}
-
-<!--
-    {% if prev_url %}<a href="{{prev_url}}"><< Previous page</a>{% else %}<< First page{% endif %} |
-    {% if next_url %}<a href="{{next_url}}">Next page >></a>{% else %}Last page >>{% endif %}
--->
 {% endblock %}

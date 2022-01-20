@@ -34,12 +34,12 @@ class ProductSpider(scrapy.Spider):
                 name=name,
                 description=description,
                 full_price=parse_price(product.css('div.catalog-product__price-old::text').get()),
-                history_price=[(parse_price(product.css('div.catalog-product__price-actual::text').get()),
-                                now)],
+                history_price=[(parse_price(product.css('div.catalog-product__price-actual::text').get()), now)],
                 link=link,
                 image=product.css('div.catalog-product__image img::attr(data-src)').get(),
                 last_update=now,
                 last_seen=now,
+                removed=False
             )
 
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()

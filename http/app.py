@@ -4,11 +4,11 @@ import pymongo
 from flask import Flask, render_template, request, url_for
 
 app = Flask(__name__)
+app.debug = True
 
 client = pymongo.MongoClient('mongodb://localhost:2717')
 db = client['parsing_dns']
 collection_name = 'dns_goods'
-app.debug = True
 
 
 @app.route('/')
@@ -34,7 +34,7 @@ def index():
         page=page,
         prev_url=prev_url,
         next_url=next_url,
-        pages=pages
+        pages=pages,
     )
 
 
