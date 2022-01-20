@@ -11,4 +11,4 @@ class ProductItem(scrapy.Item):
     image = scrapy.Field()
     last_update = scrapy.Field()
     last_seen = scrapy.Field()
-    remote = scrapy.Field()
+    remoted = scrapy.Field()
