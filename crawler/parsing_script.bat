@@ -1,1 +1,1 @@
-C:\dev\parsing_dns\venv\Scripts\python.exe "C:/dev/parsing_dns/crawler/remoted_status.py"
+C:\dev\parsing_dns\venv\Scripts\python.exe "C:/dev/parsing_dns/crawler/removed_status.py"

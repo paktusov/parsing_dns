@@ -34,7 +34,7 @@ def index():
         page=page,
         prev_url=prev_url,
         next_url=next_url,
-        pages=pages
+        pages=pages,
     )
 
 

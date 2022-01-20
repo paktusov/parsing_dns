@@ -39,7 +39,7 @@ class ProductSpider(scrapy.Spider):
                 image=product.css('div.catalog-product__image img::attr(data-src)').get(),
                 last_update=now,
                 last_seen=now,
-                remoted=False
+                removed=False
             )
 
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
