@@ -2,11 +2,21 @@ import math
 import datetime as dt
 import pymongo
 from flask import Flask, render_template, request, url_for
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 app.debug = True
 
-client = pymongo.MongoClient('mongodb://localhost:2717')
+mongo_uri = 'mongodb+srv://parsing.4qf0t.mongodb.net/'
+mongo_username = os.getenv('MONGODB_USERNAME')
+mongo_password = os.getenv('MONGODB_PASSWORD')
+client = pymongo.MongoClient(
+    mongo_uri,
+    username=mongo_username,
+    password=mongo_password
+)
 db = client['parsing_dns']
 collection_name = 'dns_goods'
 

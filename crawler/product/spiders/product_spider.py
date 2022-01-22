@@ -25,7 +25,6 @@ class ProductSpider(scrapy.Spider):
         for product in response.css('div.markdown-page__group-title, div.catalog-product'):
             if product.css('div.markdown-page__group-title'):
                 category = product.css('div.markdown-page__group-title::text').get()
-                print(category)
             else:
                 name, *description = product.css('a.catalog-product__name span::text').getall()
                 description = description[0].strip("[]") if description else None

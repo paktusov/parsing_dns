@@ -1,6 +1,9 @@
 from itemadapter import ItemAdapter
 import logging
 import pymongo
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class MongoPipeline(object):
@@ -18,7 +21,13 @@ class MongoPipeline(object):
         )
 
     def open_spider(self, spider):
-        self.client = pymongo.MongoClient(self.mongo_uri)
+        self.mongo_username = os.getenv('MONGODB_USERNAME')
+        self.mongo_password = os.getenv('MONGODB_PASSWORD')
+        self.client = pymongo.MongoClient(
+            self.mongo_uri,
+            username=self.mongo_username,
+            password=self.mongo_password
+        )
         self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):
