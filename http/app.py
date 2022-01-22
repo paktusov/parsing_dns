@@ -2,11 +2,21 @@ import math
 import datetime as dt
 import pymongo
 from flask import Flask, render_template, request, url_for
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 app.debug = True
 
-client = pymongo.MongoClient('mongodb://localhost:2717')
+mongo_uri = os.getenv('MONGODB_URI')
+mongo_username = os.getenv('MONGODB_USERNAME')
+mongo_password = os.getenv('MONGODB_PASSWORD')
+client = pymongo.MongoClient(
+    mongo_uri,
+    username=mongo_username,
+    password=mongo_password
+)
 db = client['parsing_dns']
 collection_name = 'dns_goods'
 
@@ -15,7 +25,7 @@ collection_name = 'dns_goods'
 def index():
     title = 'Markdown'
     header = 'Markdown'
-    count = db[collection_name].find().count()
+    count = db[collection_name].count_documents({})
     page = request.args.get('page', 1, type=int)
     per_page = 30
     pages = math.ceil(count // per_page)
