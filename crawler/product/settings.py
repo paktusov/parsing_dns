@@ -1,4 +1,7 @@
 from shutil import which
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Scrapy settings for tutorial project
 #
@@ -66,7 +69,7 @@ ITEM_PIPELINES = {
     'product.pipelines.MongoPipeline': 300,
 }
 
-MONGO_URI = 'mongodb+srv://parsing.4qf0t.mongodb.net/'
+MONGO_URI = os.getenv('MONGODB_URI')
 MONGO_DATABASE = 'parsing_dns'
 
 # Enable and configure the AutoThrottle extension (disabled by default)

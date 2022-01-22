@@ -9,7 +9,7 @@ load_dotenv()
 app = Flask(__name__)
 app.debug = True
 
-mongo_uri = 'mongodb+srv://parsing.4qf0t.mongodb.net/'
+mongo_uri = os.getenv('MONGODB_URI')
 mongo_username = os.getenv('MONGODB_USERNAME')
 mongo_password = os.getenv('MONGODB_PASSWORD')
 client = pymongo.MongoClient(
@@ -25,7 +25,7 @@ collection_name = 'dns_goods'
 def index():
     title = 'Markdown'
     header = 'Markdown'
-    count = db[collection_name].find().count()
+    count = db[collection_name].count_documents({})
     page = request.args.get('page', 1, type=int)
     per_page = 30
     pages = math.ceil(count // per_page)
