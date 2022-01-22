@@ -1,7 +1,7 @@
 import scrapy
 
 
-class ProductItem(scrapy.Item):
+class DNSItem(scrapy.Item):
     _id = scrapy.Field()
     name = scrapy.Field()
     category = scrapy.Field()
