@@ -12,9 +12,9 @@ load_dotenv()
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'product'
-SPIDER_MODULES = ['product.spiders']
-NEWSPIDER_MODULE = 'product.spiders'
+BOT_NAME = 'crawler'
+SPIDER_MODULES = ['crawler.spiders']
+#NEWSPIDER_MODULE = 'product.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
@@ -66,7 +66,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'product.pipelines.MongoPipeline': 300,
+    'crawler.pipelines.MongoPipeline': 300,
 }
 
 MONGO_URI = os.getenv('MONGODB_URI')

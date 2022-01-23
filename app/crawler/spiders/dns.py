@@ -4,7 +4,7 @@ import pytz
 import scrapy
 import re
 from scrapy_selenium import SeleniumRequest
-from product.items import ProductItem
+from crawler.items import ProductItem
 
 
 def parse_price(price: str) -> Optional[int]:
@@ -13,8 +13,8 @@ def parse_price(price: str) -> Optional[int]:
     return int(re.sub(r"\D+", "", price))
 
 
-class ProductSpider(scrapy.Spider):
-    name = "product"
+class DNSSpider(scrapy.Spider):
+    name = "dns"
     i = 1
 
     def start_requests(self):
