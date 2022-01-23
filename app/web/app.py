@@ -1,7 +1,7 @@
 import math
 import datetime as dt
 import pymongo
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -21,11 +21,16 @@ db = client['parsing_dns']
 collection_name = 'dns_goods'
 
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 def index():
     title = 'Markdown'
     header = 'Markdown'
-    count = db[collection_name].count_documents({})
+    if request.method == 'POST':
+        name = request.form['find'].lower()
+        products = db[collection_name].find({"name": {'$regex': name, '$options': 'i'}}).sort("last_update", pymongo.DESCENDING)
+    else:
+        products = db[collection_name].find().sort("last_update", pymongo.DESCENDING)
+    count = products.count()
     page = request.args.get('page', 1, type=int)
     per_page = 30
     pages = math.ceil(count // per_page)
@@ -33,12 +38,12 @@ def index():
     limit = per_page
     prev_url = url_for('index', page=page-1) if page > 1 else None
     next_url = url_for('index', page=page+1) if page < pages else None
-    products = list(db[collection_name].find().sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
-    for i in range(len(products)):
-        products[i]['last_update'] = dt.datetime.fromisoformat(products[i]['last_update']).strftime("%Y.%m.%d %H:%M")
+    current_products = list(products.skip(offset).limit(limit))
+    for i in range(len(current_products)):
+        current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update']).strftime("%Y.%m.%d %H:%M")
     return render_template(
         'index.html',
-        products=products,
+        products=current_products,
         title=title,
         header=header,
         page=page,

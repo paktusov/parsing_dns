@@ -5,13 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{{title}}{% endblock %}</title>
     <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/removed.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/removed.css') }}">
     <link rel="icon" type="image" href="{{ url_for('static', filename='icon.png') }}">
   </head>
   <body>
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
       <div class=container>
-        <p class="navbar-brand">{{header}}</p>
+        <a class="navbar-brand" href="{{ url_for('index')}}">{{header}}</a>
+        <form method="post">
+          <div class="form-group">
+            <input type="text" name="find"
+               placeholder="Searched product" class="form-control"
+               value="{{ request.form['find'] }}">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Find</button>
+          </div>
+        </form>
       </div>
     </nav>
     <main>
