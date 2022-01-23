@@ -4,7 +4,7 @@ import pytz
 import scrapy
 import re
 from scrapy_selenium import SeleniumRequest
-from crawler.items import DNSItem
+from crawler.items import ProductItem
 
 
 def parse_price(price: str) -> Optional[int]:
@@ -31,7 +31,7 @@ class DNSSpider(scrapy.Spider):
                 link = response.urljoin(product.css('a.catalog-product__name::attr(href)').get())
                 now = dt.datetime.now().isoformat()
 
-                yield DNSItem(
+                yield ProductItem(
                     _id=link.strip("/").split("/")[-1],
                     name=name,
                     category=category,
