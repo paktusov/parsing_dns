@@ -21,25 +21,20 @@ db = client['parsing_dns']
 collection_name = 'dns_goods'
 
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route('/')
 def index():
     title = 'Markdown'
     header = 'Markdown'
-    if request.method == 'POST':
-        name = request.form['find'].lower()
-        return redirect(url_for('index', name=name))
-#        products = db[collection_name].find({"name": {'$regex': name, '$options': 'i'}}).sort("last_update", pymongo.DESCENDING)
-    else:
-        name = request.args.get('name', '', type=str)
-    products = db[collection_name].find({"name": {'$regex': name, '$options': 'i'}}).sort("last_update", pymongo.DESCENDING)
+    keyword = request.args.get('keyword', '', type=str)
+    products = db[collection_name].find({"name": {'$regex': keyword, '$options': 'i'}}).sort("last_update", pymongo.DESCENDING)
     count = products.count()
     page = request.args.get('page', 1, type=int)
     per_page = 30
     pages = math.ceil(count // per_page)
     offset = (page - 1) * per_page
     limit = per_page
-    prev_url = url_for('index', page=page-1, name=name) if page > 1 else None
-    next_url = url_for('index', page=page+1, name=name) if page < pages else None
+    prev_url = url_for('index', page=page-1, keyword=keyword) if page > 1 else None
+    next_url = url_for('index', page=page+1, keyword=keyword) if page < pages else None
     current_products = list(products.skip(offset).limit(limit))
     for i in range(len(current_products)):
         current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update']).strftime("%Y.%m.%d %H:%M")
@@ -52,7 +47,7 @@ def index():
         prev_url=prev_url,
         next_url=next_url,
         pages=pages,
-        name=name,
+        keyword=keyword,
     )
 
 

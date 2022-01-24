@@ -16,8 +16,8 @@
             <a class="navbar-brand justify-content-center justify-content-lg-start" href="{{ url_for('index')}}">{{header}}</a>
           </div>
           <div class="col-sm-8">
-            <form method="post" class="d-flex">
-              <input type="search" name="find" placeholder="Searched product" class="form-control me-2" value="{{ request.form['find'] }}">
+            <form method="get" class="d-flex">
+              <input type="search" name="keyword" placeholder="Searched product" class="form-control me-2" value="{{ request.form['keyword'] }}">
               <button type="submit" class="btn">Find</button>
             </form>
           </div>
