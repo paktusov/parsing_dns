@@ -9,19 +9,19 @@
     <link rel="icon" type="image" href="{{ url_for('static', filename='icon.png') }}">
   </head>
   <body>
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <nav nav class="navbar-light" style="background-color: #e3f2fd;">
       <div class=container>
-        <a class="navbar-brand" href="{{ url_for('index')}}">{{header}}</a>
-        <form method="post">
-          <div class="form-group">
-            <input type="text" name="find"
-               placeholder="Searched product" class="form-control"
-               value="{{ request.form['find'] }}">
+        <div class="row" >
+          <div class="col-sm-2">
+            <a class="navbar-brand justify-content-center justify-content-lg-start" href="{{ url_for('index')}}">{{header}}</a>
           </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary">Find</button>
+          <div class="col-sm-8">
+            <form method="post" class="d-flex">
+              <input type="search" name="find" placeholder="Searched product" class="form-control me-2" value="{{ request.form['find'] }}">
+              <button type="submit" class="btn">Find</button>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </nav>
     <main>
