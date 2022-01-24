@@ -26,7 +26,7 @@ def index():
     title = 'Markdown'
     header = 'Markdown'
     keyword = request.args.get('keyword', '', type=str)
-    products = db[collection_name].find({"name": {'$regex': keyword, '$options': 'i'}}).sort("last_update", pymongo.DESCENDING)
+    products = db[collection_name].find({"name": {'$regex': keyword, '$options': 'i'}})
     count = products.count()
     page = request.args.get('page', 1, type=int)
     per_page = 30
@@ -35,9 +35,9 @@ def index():
     limit = per_page
     prev_url = url_for('index', page=page-1, keyword=keyword) if page > 1 else None
     next_url = url_for('index', page=page+1, keyword=keyword) if page < pages else None
-    current_products = list(products.skip(offset).limit(limit))
+    current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
     for i in range(len(current_products)):
-        current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update']).strftime("%Y.%m.%d %H:%M")
+        current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
     return render_template(
         'index.html',
         products=current_products,

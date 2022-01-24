@@ -14,7 +14,7 @@
                     <b><a class="p-0 text-dark" target="_blank" href="{{ product.link }}">{{ product.name }}</a></b><br>
                     {{product.description}}<br>
                     {{ product.history_price[-1][0] }} р. | {{product.full_price}} р.<br>
-                    {{product.last_update}}
+                    {{product.last_update.strftime("%Y.%m.%d %H:%M")}}
                 </div>
            </div>
     {% endfor %}
