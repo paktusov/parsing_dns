@@ -9,7 +9,11 @@
             {% if page == i %}
                 <li class="page-item active"><span class="page-link">{{ i }}</span></li>
             {% else %}
-                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% if keyword %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}&keyword={{ keyword }}">{{ i }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
             {% endif %}
         {% endfor %}
         {% if next_url %}
