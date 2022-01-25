@@ -3,11 +3,24 @@ import pymongo
 import scrapy
 import os
 from dotenv import load_dotenv
+from twilio.rest import Client
 import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider
 load_dotenv()
+
+
+def sms_sender(sms_text):
+    account_sid = os.getenv('account_sid')
+    auth_token = os.getenv('auth_token')
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        to=os.getenv('to'),
+        from_=os.getenv('from_'),
+        body=sms_text)
+    return message.sid
+
 
 now = dt.datetime.now().isoformat()
 
@@ -29,3 +42,7 @@ collection_name = 'dns_goods'
 
 removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
 print(f'Has been removed: {removed.modified_count}')
+
+updated = db[collection_name].find({'last_update': {'$lt': now}})
+if updated:
+    sms_sender("Появились новые товары")
