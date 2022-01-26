@@ -2,6 +2,7 @@ import datetime as dt
 import pymongo
 import scrapy
 import os
+import telebot
 from dotenv import load_dotenv
 from twilio.rest import Client
 import crawler.settings
@@ -12,8 +13,8 @@ load_dotenv()
 
 
 def sms_sender(sms_text):
-    account_sid = os.getenv('account_sid')
-    auth_token = os.getenv('auth_token')
+    account_sid = os.getenv('twilio_account_sid')
+    auth_token = os.getenv('twilio_auth_token')
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         to=os.getenv('to'),
@@ -21,6 +22,11 @@ def sms_sender(sms_text):
         body=sms_text)
     return message.sid
 
+def telegram_sender(text):
+    token = os.getenv('telegram_token')
+    bot = telebot.TeleBot(token)
+    chatid = os.getenv('id')
+    bot.send_message(chatid, text=text)
 
 now = dt.datetime.now().isoformat()
 
@@ -43,6 +49,9 @@ collection_name = 'dns_goods'
 removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
 print(f'Has been removed: {removed.modified_count}')
 
-updated = db[collection_name].find({'last_update': {'$lt': now}})
+updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
+print(updated)
 if updated:
-    sms_sender("Появились новые товары")
+    sms_sender("Появились новые товары!")
+    telegram_sender("Появились новые товары! http://beeb08c902a0.sn.mynetname.net:5000/")
+
