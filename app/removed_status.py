@@ -12,7 +12,7 @@ from crawler.spiders.dns import DNSSpider
 load_dotenv()
 
 
-def sms_sender(sms_text):
+def send_sms(sms_text):
     account_sid = os.getenv('twilio_account_sid')
     auth_token = os.getenv('twilio_auth_token')
     client = Client(account_sid, auth_token)
@@ -22,7 +22,7 @@ def sms_sender(sms_text):
         body=sms_text)
     return message.sid
 
-def telegram_sender(text):
+def send_to_telegram(text):
     token = os.getenv('telegram_token')
     bot = telebot.TeleBot(token)
     chatid = os.getenv('id')
@@ -52,6 +52,6 @@ print(f'Has been removed: {removed.modified_count}')
 updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
 print(updated)
 if updated:
-    sms_sender("Появились новые товары!")
-    telegram_sender("Появились новые товары! http://beeb08c902a0.sn.mynetname.net:5000/")
+    send_sms("Появились новые товары!")
+    send_to_telegram("Появились новые товары! http://beeb08c902a0.sn.mynetname.net:5000/")
 
