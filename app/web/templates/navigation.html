@@ -1,0 +1,15 @@
+<nav nav class="navbar-light" style="background-color: #e3f2fd;">
+    <div class=container>
+        <div class="row" >
+            <div class="col-sm-2">
+                <a class="navbar-brand justify-content-center justify-content-lg-start" href="{{ url_for('index')}}">{{header}}</a>
+            </div>
+            <div class="col-sm-8">
+                <form method="get" class="d-flex">
+                    <input type="search" name="keyword" placeholder="Searched product" class="form-control me-2" value="{{ request.form['keyword'] }}">
+                    <button type="submit" class="btn">Find</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>

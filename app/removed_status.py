@@ -22,11 +22,24 @@ def send_sms(sms_text):
         body=sms_text)
     return message.sid
 
-def send_to_telegram(text):
+
+def sendmessage_to_telegram(text):
     token = os.getenv('telegram_token')
     bot = telebot.TeleBot(token)
     chatid = os.getenv('id')
     bot.send_message(chatid, text=text)
+
+
+def sendphoto_to_telegram(product):
+    token = os.getenv('telegram_token')
+    bot = telebot.TeleBot(token)
+    chatid = os.getenv('id')
+    caption = f'''<a href="{product['link']}">{product['name']}'</a> \n
+{product['description']} \n
+{product['history_price'][-1][0]} р. | {product['full_price']} р. \n
+{dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")}'''
+    bot.send_photo(chatid, photo=product['image'], caption=caption, parse_mode='HTML')
+
 
 now = dt.datetime.now().isoformat()
 
@@ -50,8 +63,7 @@ removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': 
 print(f'Has been removed: {removed.modified_count}')
 
 updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
-print(updated)
 if updated:
-    send_sms("Появились новые товары!")
-    send_to_telegram("Появились новые товары! http://beeb08c902a0.sn.mynetname.net:5000/")
-
+#    send_sms("Появились новые товары!")
+    for product in updated:
+        sendphoto_to_telegram(product)
