@@ -64,7 +64,7 @@ collection_name = 'dns_goods'
 removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
 print(f'Has been removed: {removed.modified_count}')
 
-updated = list(db[collection_name].find().limit(1))
+updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
 if updated:
 #    send_sms("Появились новые товары!")
     for product in updated:
