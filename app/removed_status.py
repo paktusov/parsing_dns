@@ -2,12 +2,46 @@ import datetime as dt
 import pymongo
 import scrapy
 import os
+import telebot
 from dotenv import load_dotenv
+from twilio.rest import Client
 import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider
 load_dotenv()
+
+
+def send_sms(sms_text):
+    account_sid = os.getenv('twilio_account_sid')
+    auth_token = os.getenv('twilio_auth_token')
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        to=os.getenv('to'),
+        from_=os.getenv('from_'),
+        body=sms_text)
+    return message.sid
+
+
+def sendmessage_to_telegram(text):
+    token = os.getenv('telegram_token')
+    bot = telebot.TeleBot(token)
+    chatid = os.getenv('id')
+    bot.send_message(chatid, text=text)
+
+
+def sendphoto_to_telegram(product):
+    token = os.getenv('telegram_token')
+    bot = telebot.TeleBot(token)
+    chatid = os.getenv('id')
+    last_price = product['history_price'][-1][0]
+    last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
+    caption = f'''<a href="{product['link']}">{product['name']}'</a>
+\n{product['description']}
+\n{last_price} р. | {product['full_price']} р.
+\n{last_update_fmt}'''
+    bot.send_photo(chatid, photo=product['image'], caption=caption, parse_mode='HTML')
+
 
 now = dt.datetime.now().isoformat()
 
@@ -29,3 +63,9 @@ collection_name = 'dns_goods'
 
 removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
 print(f'Has been removed: {removed.modified_count}')
+
+updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
+if updated:
+#    send_sms("Появились новые товары!")
+    for product in updated:
+        sendphoto_to_telegram(product)
