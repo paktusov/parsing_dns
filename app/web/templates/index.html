@@ -13,7 +13,7 @@
                 <div class="col-sm-8">
                     <b><a class="p-0 text-dark" target="_blank" href="{{ product.link }}">{{ product.name }}</a></b><br>
                     {{product.description}}<br>
-                    {{ product.history_price[-1][0] }} р. | {{product.full_price}} р.<br>
+                    {{ product.history_price[-1][0] }} р. {% if product.full_price %}|  {{product.full_price}} р.{% endif %}<br>
                     {{product.last_update.strftime("%Y.%m.%d %H:%M")}}
                 </div>
            </div>
