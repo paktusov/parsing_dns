@@ -36,11 +36,14 @@ def sendphoto_to_telegram(product):
     chatid = os.getenv('id')
     last_price = product['history_price'][-1][0]
     last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
-    caption = f'''<a href="{product['link']}">{product['name']}'</a>
-\n{product['description']}
-\n{last_price} р. | {product['full_price']} р.
-\n{last_update_fmt}'''
-    bot.send_photo(chatid, photo=product['image'], caption=caption, parse_mode='HTML')
+    caption = '<a href="{}">{}</a>\n\n{}\n\n{} р. | {} р.\n\n{}'
+    format_caption = caption.format(product['link'],
+                             product['name'],
+                             product['description'],
+                             last_price,
+                             product['full_price'],
+                             last_update_fmt)
+    bot.send_photo(chatid, photo=product['image'], caption=format_caption, parse_mode='HTML')
 
 
 now = dt.datetime.now().isoformat()
