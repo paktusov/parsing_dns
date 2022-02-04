@@ -40,37 +40,37 @@ def sendphoto_to_telegram(product, settings):
                                     )
     bot.send_photo(chatid, photo=product['image'], caption=format_caption, parse_mode='HTML')
 
+if __name__ == "__main__":
+    now = dt.datetime.now().isoformat()
 
-now = dt.datetime.now().isoformat()
+    # start parsing
+    crawler_settings = get_project_settings()
+    crawler = CrawlerProcess(settings=crawler_settings)
+    crawler.crawl(DNSSpider)
+    crawler.start()
 
-# start parsing
-crawler_settings = get_project_settings()
-crawler = CrawlerProcess(settings=crawler_settings)
-crawler.crawl(DNSSpider)
-crawler.start()
+    # connection with DB
+    mongo_settings = MongoDBSettings()
+    mongo_uri = mongo_settings.MONGODB_URI
+    mongo_username = mongo_settings.MONGODB_USERNAME
+    mongo_password = mongo_settings.MONGODB_PASSWORD
+    client = pymongo.MongoClient(
+        mongo_uri,
+        username=mongo_username,
+        password=mongo_password
+    )
+    db = client['parsing_dns']
+    collection_name = 'dns_goods'
 
-# connection with DB
-mongo_settings = MongoDBSettings()
-mongo_uri = mongo_settings.MONGODB_URI
-mongo_username = mongo_settings.MONGODB_USERNAME
-mongo_password = mongo_settings.MONGODB_PASSWORD
-client = pymongo.MongoClient(
-    mongo_uri,
-    username=mongo_username,
-    password=mongo_password
-)
-db = client['parsing_dns']
-collection_name = 'dns_goods'
+    # update removed status in DB
+    removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
+    print(f'Has been removed: {removed.modified_count}')
 
-# update removed status in DB
-removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
-print(f'Has been removed: {removed.modified_count}')
-
-# notification
-sms_settings = TwilioSMSNotificationSettings()
-tlg_settings = NotificationSettings()
-updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
-if updated:
-#    send_sms("Появились новые товары!", sms_settings)
-    for product in updated:
-        sendphoto_to_telegram(product, tlg_settings)
+    # notification
+    sms_settings = TwilioSMSNotificationSettings()
+    tlg_settings = NotificationSettings()
+    updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
+    if updated:
+    #    send_sms("Появились новые товары!", sms_settings)
+        for product in updated:
+            sendphoto_to_telegram(product, tlg_settings)
