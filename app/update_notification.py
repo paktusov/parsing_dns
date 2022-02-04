@@ -24,7 +24,7 @@ def send_sms(sms_text, settings):
     return message.sid
 
 
-def sendphoto_to_telegram(product, settings):
+def send_photo_to_telegram(product, settings):
     token = settings.telegram_token
     bot = telebot.TeleBot(token)
     chatid = settings.id
@@ -39,6 +39,7 @@ def sendphoto_to_telegram(product, settings):
                                     last_update_fmt
                                     )
     bot.send_photo(chatid, photo=product['image'], caption=format_caption, parse_mode='HTML')
+
 
 if __name__ == "__main__":
     now = dt.datetime.now().isoformat()
@@ -73,4 +74,4 @@ if __name__ == "__main__":
     if updated:
     #    send_sms("Появились новые товары!", sms_settings)
         for product in updated:
-            sendphoto_to_telegram(product, tlg_settings)
+            send_photo_to_telegram(product, tlg_settings)
