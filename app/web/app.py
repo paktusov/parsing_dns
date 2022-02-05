@@ -2,23 +2,19 @@ import math
 import datetime as dt
 import pymongo
 from flask import Flask, render_template, request, url_for, redirect
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from config import mongo_config
+
 
 app = Flask(__name__)
 app.debug = True
 
-mongo_uri = os.getenv('MONGODB_URI')
-mongo_username = os.getenv('MONGODB_USERNAME')
-mongo_password = os.getenv('MONGODB_PASSWORD')
 client = pymongo.MongoClient(
-    mongo_uri,
-    username=mongo_username,
-    password=mongo_password
+    mongo_config.uri,
+    username=mongo_config.username,
+    password=mongo_config.password
 )
-db = client['parsing_dns']
-collection_name = 'dns_goods'
+db = client[mongo_config.database]
+collection_name = 'chelyabinsk'
 
 
 @app.route('/')
@@ -33,8 +29,10 @@ def index():
     pages = math.ceil(count // per_page)
     offset = (page - 1) * per_page
     limit = per_page
-    prev_url = url_for('index', page=page-1, keyword=keyword) if page > 1 else None
-    next_url = url_for('index', page=page+1, keyword=keyword) if page < pages else None
+    kwargs = dict(request.args)
+    kwargs.pop('page', None)
+    prev_url = url_for('index', page=page-1, **kwargs) if page > 1 else None
+    next_url = url_for('index', page=page+1, **kwargs) if page < pages else None
     current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
     for i in range(len(current_products)):
         current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
@@ -48,6 +46,7 @@ def index():
         next_url=next_url,
         pages=pages,
         keyword=keyword,
+        kwargs=kwargs
     )
 
 

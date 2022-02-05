@@ -1,34 +1,20 @@
 from itemadapter import ItemAdapter
 import logging
 import pymongo
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from config import mongo_config
 
 
-class MongoPipeline(object):
-    collection_name = 'dns_goods'
-
-    def __init__(self, mongo_uri, mongo_db):
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE')
-        )
+class MongoPipeline:
 
     def open_spider(self, spider):
-        self.mongo_username = os.getenv('MONGODB_USERNAME')
-        self.mongo_password = os.getenv('MONGODB_PASSWORD')
         self.client = pymongo.MongoClient(
-            self.mongo_uri,
-            username=self.mongo_username,
-            password=self.mongo_password
+            mongo_config.uri,
+            username=mongo_config.username,
+            password=mongo_config.password
         )
-        self.db = self.client[self.mongo_db]
+        self.db = self.client[mongo_config.database]
+        if hasattr(spider, 'collection_name'):
+            self.collection_name = spider.collection_name
 
     def close_spider(self, spider):
         self.client.close()
