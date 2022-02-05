@@ -1,1 +1,1 @@
-C:\dev\parsing_dns\venv\Scripts\python.exe "C:/dev/parsing_dns/app/update_notification.py"
+C:\Users\AD0FA~1\AppData\Local\pypoetry\Cache\virtualenvs\parsing-dns-JWkq6t_2-py3.9\Scripts\python.exe "C:/dev/parsing_dns/app/update_notification.py"
