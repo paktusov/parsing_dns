@@ -50,7 +50,7 @@ if __name__ == "__main__":
         username=mongo_config.username,
         password=mongo_config.password
     )
-    db = client['parsing_dns']
+    db = client[mongo_config.database]
     collection_name = 'chelyabinsk'
 
     # update removed status in DB

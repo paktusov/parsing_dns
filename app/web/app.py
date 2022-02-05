@@ -13,7 +13,7 @@ client = pymongo.MongoClient(
     username=mongo_config.username,
     password=mongo_config.password
 )
-db = client['parsing_dns']
+db = client[mongo_config.database]
 collection_name = 'chelyabinsk'
 
 

@@ -27,6 +27,7 @@ class MongoDBSettings(BaseSettings):
     username: str
     password: str
     uri: str
+    database: str
 
     class Config:
         evn_file = ".env"
