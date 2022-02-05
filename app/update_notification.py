@@ -62,4 +62,4 @@ if __name__ == "__main__":
     if updated:
     #    send_sms("Появились новые товары!", twilio_config)
         for product in updated:
-            send_photo_to_telegram(product, mongo_config)
+            send_photo_to_telegram(product,telegram_config)
