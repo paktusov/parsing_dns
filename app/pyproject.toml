@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "parsing_dns"
+version = "0.1.0"
+description = "This is a project to keep track of new or reduced prices in the \"Discounted Items\" section of the DNS store. Thanks to notification via SMS or Telegram, it becomes possible to quickly purchase goods at a bargain price."
+authors = ["Arkadii Paktusov <paktusov@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.0.2"
+Scrapy = "^2.5.1"
+requests = "^2.27.1"
+twilio = "^7.5.1"
+pyTelegramBotAPI = "^4.4.0"
+pydantic = "^1.9.0"
+pymongo = {extras = ["srv"], version = "^4.0.1"}
+python-dotenv = "^0.19.2"
+selenium = "^4.1.0"
+scrapy-selenium = {git = "https://github.com/createdbysk/scrapy-selenium.git", rev = "d21d251f836bed0eb14a3a6edc95bf5034b7dbb5"}
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

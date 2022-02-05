@@ -1,1 +1,0 @@
-C:\dev\parsing_dns\venv\Scripts\python.exe "C:/dev/parsing_dns/app/update_notification.py"
