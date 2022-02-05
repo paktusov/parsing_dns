@@ -4,33 +4,33 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class TelegramNotificationSettings(BaseSettings):
-    telegram_token: str
+    token: str
     id: str
 
     class Config:
         evn_file = ".env"
-        env_file_encoding = 'utf-8'
+        env_prefix = 'telegram_'
 
 
 class TwilioSMSNotificationSettings(BaseSettings):
-    twilio_account_sid: str
-    twilio_auth_token: str
+    account_sid: str
+    auth_token: str
     from_: str
     to: str
 
     class Config:
         evn_file = ".env"
-        env_file_encoding = 'utf-8'
+        env_prefix = 'twilio_'
 
 
 class MongoDBSettings(BaseSettings):
-    MONGODB_USERNAME: str
-    MONGODB_PASSWORD: str
-    MONGODB_URI: str
+    username: str
+    password: str
+    uri: str
 
     class Config:
         evn_file = ".env"
-        env_file_encoding = 'utf-8'
+        env_prefix = 'mongodb_'
 
 
 telegram_config = TelegramNotificationSettings()

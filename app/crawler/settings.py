@@ -67,7 +67,7 @@ ITEM_PIPELINES = {
     'crawler.pipelines.MongoPipeline': 300,
 }
 
-MONGO_URI = mongo_config.MONGODB_URI
+MONGO_URI = mongo_config.uri
 MONGO_DATABASE = 'parsing_dns'
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -4,8 +4,8 @@ import pymongo
 from config import mongo_config
 
 
-class MongoPipeline(object):
-    collection_name = 'chelyabinsk'
+class MongoPipeline():
+
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
@@ -19,14 +19,14 @@ class MongoPipeline(object):
         )
 
     def open_spider(self, spider):
-        self.mongo_username = mongo_config.MONGODB_USERNAME
-        self.mongo_password = mongo_config.MONGODB_PASSWORD
         self.client = pymongo.MongoClient(
             self.mongo_uri,
-            username=self.mongo_username,
-            password=self.mongo_password
+            username=mongo_config.username,
+            password=mongo_config.password
         )
         self.db = self.client[self.mongo_db]
+        if hasattr(spider, 'collection_name'):
+            self.collection_name = spider.collection_name
 
     def close_spider(self, spider):
         self.client.close()

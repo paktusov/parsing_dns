@@ -11,9 +11,7 @@ from config import telegram_config, twilio_config, mongo_config
 
 
 def send_sms(sms_text, settings):
-    account_sid = settings.twilio_account_sid
-    auth_token = settings.twilio_auth_token
-    client = Client(account_sid, auth_token)
+    client = Client(settings.account_sid, settings.auth_token)
     message = client.messages.create(
         to=settings.to,
         from_=settings.from_,
@@ -23,7 +21,7 @@ def send_sms(sms_text, settings):
 
 
 def send_photo_to_telegram(product, settings):
-    bot = telebot.TeleBot(settings.telegram_token)
+    bot = telebot.TeleBot(settings.token)
     last_price = product['history_price'][-1][0]
     last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
     caption = '<a href="{}">{}</a>\n\n{}\n\n{} р. | {} р.\n\n{}'
@@ -48,9 +46,9 @@ if __name__ == "__main__":
 
     # connection with DB
     client = pymongo.MongoClient(
-        mongo_config.MONGODB_URI,
-        username=mongo_config.MONGODB_USERNAME,
-        password=mongo_config.MONGODB_PASSWORD
+        mongo_config.uri,
+        username=mongo_config.username,
+        password=mongo_config.password
     )
     db = client['parsing_dns']
     collection_name = 'chelyabinsk'

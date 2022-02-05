@@ -2,22 +2,19 @@ import math
 import datetime as dt
 import pymongo
 from flask import Flask, render_template, request, url_for, redirect
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from config import mongo_config
+
 
 app = Flask(__name__)
 app.debug = True
 
-mongo_uri = os.getenv('MONGODB_URI')
-mongo_username = os.getenv('MONGODB_USERNAME')
-mongo_password = os.getenv('MONGODB_PASSWORD')
 client = pymongo.MongoClient(
-    mongo_uri,
-    username=mongo_username,
-    password=mongo_password
+    mongo_config.uri,
+    username=mongo_config.username,
+    password=mongo_config.password
 )
 db = client['parsing_dns']
+collection_name = 'chelyabinsk'
 
 
 @app.route('/')
@@ -25,7 +22,7 @@ def index():
     title = 'Markdown'
     header = 'Markdown'
     keyword = request.args.get('keyword', '', type=str)
-    products = db['chelyabinsk'].find({"name": {'$regex': keyword, '$options': 'i'}})
+    products = db[collection_name].find({"name": {'$regex': keyword, '$options': 'i'}})
     count = products.count()
     page = request.args.get('page', 1, type=int)
     per_page = 40
@@ -39,7 +36,6 @@ def index():
     current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
     for i in range(len(current_products)):
         current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
-    print(kwargs)
     return render_template(
         'index.html',
         products=current_products,

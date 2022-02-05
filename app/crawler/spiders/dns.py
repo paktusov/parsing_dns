@@ -16,6 +16,7 @@ def parse_price(price: str) -> Optional[int]:
 class DNSSpider(scrapy.Spider):
     name = "dns"
     i = 1
+    collection_name = 'chelyabinsk'
 
     def start_requests(self):
         url = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
