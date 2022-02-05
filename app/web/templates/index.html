@@ -2,17 +2,6 @@
 
 {% block content %}
     <br>
-    {% if 'keyword' in kwargs %}
-        <div class="row" >
-            <div class="col-sm-2">
-                You find:
-            </div>
-            <div class="col-sm-8">
-                 {{ keyword }}
-            </div>
-        </div>
-        <br>
-    {% endif %}
     {% for product in products %}
         {% if product.removed %}
             <div class="row removed" >
