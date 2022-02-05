@@ -3,6 +3,7 @@ name = "parsing_dns"
 version = "0.1.0"
 description = "This is a project to keep track of new or reduced prices in the \"Discounted Items\" section of the DNS store. Thanks to notification via SMS or Telegram, it becomes possible to quickly purchase goods at a bargain price."
 authors = ["Arkadii Paktusov <paktusov@gmail.com>"]
+maintainers  = ["Andrey Frolov <zeratul268@gmail.com >"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
