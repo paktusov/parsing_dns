@@ -18,7 +18,6 @@ client = pymongo.MongoClient(
     password=mongo_password
 )
 db = client['parsing_dns']
-collection_name = 'dns_goods'
 
 
 @app.route('/')
@@ -26,18 +25,21 @@ def index():
     title = 'Markdown'
     header = 'Markdown'
     keyword = request.args.get('keyword', '', type=str)
-    products = db[collection_name].find({"name": {'$regex': keyword, '$options': 'i'}})
+    products = db['chelyabinsk'].find({"name": {'$regex': keyword, '$options': 'i'}})
     count = products.count()
     page = request.args.get('page', 1, type=int)
     per_page = 40
     pages = math.ceil(count // per_page)
     offset = (page - 1) * per_page
     limit = per_page
-    prev_url = url_for('index', page=page-1, keyword=keyword) if page > 1 else None
-    next_url = url_for('index', page=page+1, keyword=keyword) if page < pages else None
+    kwargs = dict(request.args)
+    kwargs.pop('page', None)
+    prev_url = url_for('index', page=page-1, **kwargs) if page > 1 else None
+    next_url = url_for('index', page=page+1, **kwargs) if page < pages else None
     current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
     for i in range(len(current_products)):
         current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
+    print(kwargs)
     return render_template(
         'index.html',
         products=current_products,
@@ -48,6 +50,7 @@ def index():
         next_url=next_url,
         pages=pages,
         keyword=keyword,
+        kwargs=kwargs
     )
 
 

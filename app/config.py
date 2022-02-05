@@ -1,5 +1,7 @@
+import os
 from pydantic import BaseSettings
-
+from dotenv import load_dotenv
+load_dotenv()
 
 class TelegramNotificationSettings(BaseSettings):
     telegram_token: str
@@ -7,6 +9,7 @@ class TelegramNotificationSettings(BaseSettings):
 
     class Config:
         evn_file = ".env"
+        env_file_encoding = 'utf-8'
 
 
 class TwilioSMSNotificationSettings(BaseSettings):
@@ -17,9 +20,19 @@ class TwilioSMSNotificationSettings(BaseSettings):
 
     class Config:
         evn_file = ".env"
+        env_file_encoding = 'utf-8'
 
 
 class MongoDBSettings(BaseSettings):
     MONGODB_USERNAME: str
     MONGODB_PASSWORD: str
     MONGODB_URI: str
+
+    class Config:
+        evn_file = ".env"
+        env_file_encoding = 'utf-8'
+
+
+telegram_config = TelegramNotificationSettings()
+twilio_config = TwilioSMSNotificationSettings()
+mongo_config = MongoDBSettings()

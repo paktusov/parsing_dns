@@ -1,15 +1,13 @@
 import datetime as dt
 import pymongo
 import scrapy
-import os
 import telebot
-from dotenv import load_dotenv
 from twilio.rest import Client
 import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider
-from settings import MongoDBSettings, TelegramNotificationSettings, TwilioSMSNotificationSettings
+from config import telegram_config, twilio_config, mongo_config
 
 
 def send_sms(sms_text, settings):
@@ -25,9 +23,7 @@ def send_sms(sms_text, settings):
 
 
 def send_photo_to_telegram(product, settings):
-    token = settings.telegram_token
-    bot = telebot.TeleBot(token)
-    chatid = settings.id
+    bot = telebot.TeleBot(settings.telegram_token)
     last_price = product['history_price'][-1][0]
     last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
     caption = '<a href="{}">{}</a>\n\n{}\n\n{} р. | {} р.\n\n{}'
@@ -38,7 +34,7 @@ def send_photo_to_telegram(product, settings):
                                     product['full_price'],
                                     last_update_fmt
                                     )
-    bot.send_photo(chatid, photo=product['image'], caption=format_caption, parse_mode='HTML')
+    bot.send_photo(settings.id, photo=product['image'], caption=format_caption, parse_mode='HTML')
 
 
 if __name__ == "__main__":
@@ -51,27 +47,21 @@ if __name__ == "__main__":
     crawler.start()
 
     # connection with DB
-    mongo_settings = MongoDBSettings()
-    mongo_uri = mongo_settings.MONGODB_URI
-    mongo_username = mongo_settings.MONGODB_USERNAME
-    mongo_password = mongo_settings.MONGODB_PASSWORD
     client = pymongo.MongoClient(
-        mongo_uri,
-        username=mongo_username,
-        password=mongo_password
+        mongo_config.MONGODB_URI,
+        username=mongo_config.MONGODB_USERNAME,
+        password=mongo_config.MONGODB_PASSWORD
     )
     db = client['parsing_dns']
-    collection_name = 'dns_goods'
+    collection_name = 'chelyabinsk'
 
     # update removed status in DB
     removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
     print(f'Has been removed: {removed.modified_count}')
 
     # notification
-    sms_settings = TwilioSMSNotificationSettings()
-    tlg_settings = NotificationSettings()
     updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
     if updated:
-    #    send_sms("Появились новые товары!", sms_settings)
+    #    send_sms("Появились новые товары!", twilio_config)
         for product in updated:
-            send_photo_to_telegram(product, tlg_settings)
+            send_photo_to_telegram(product, mongo_config)
