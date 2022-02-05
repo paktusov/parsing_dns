@@ -22,8 +22,11 @@ def index():
     title = 'Markdown'
     header = 'Markdown'
     keyword = request.args.get('keyword', '', type=str)
-    products = db[collection_name].find({"name": {'$regex': keyword, '$options': 'i'}})
-    count = db[collection_name].count_documents({"name": {'$regex': keyword, '$options': 'i'}})
+    query = dict()
+    if keyword:
+        query['name'] = {'$regex': keyword, '$options': 'i'}
+    products = db[collection_name].find(query)
+    count = db[collection_name].count_documents(query)
     page = request.args.get('page', 1, type=int)
     per_page = 40
     pages = math.ceil(count // per_page)
