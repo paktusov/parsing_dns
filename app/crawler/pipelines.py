@@ -4,7 +4,7 @@ import pymongo
 from config import mongo_config
 
 
-class MongoPipeline():
+class MongoPipeline:
 
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(
