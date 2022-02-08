@@ -21,7 +21,7 @@ def send_sms(sms_text):
 
 
 def send_photo_to_telegram(product, collection_name):
-    bot = telebot.TeleBot(collection_name)
+    bot = telebot.TeleBot(telegram_config.dict()[collection_name])
     last_price = product['history_price'][-1][0]
     last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
     caption = '<a href="{}">{}</a>\n\n{}\n\n{} р. | {} р.\n\n{}'
