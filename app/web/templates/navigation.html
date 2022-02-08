@@ -5,10 +5,30 @@
             <div class="col-sm-2">
                 <a class="navbar-brand justify-content-center justify-content-lg-start" href="{{ url_for('index')}}">{{header}}</a>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-5">
                 <form method="get" class="d-flex">
-                    <input type="search" name="keyword" placeholder="Searched product" class="form-control me-2" value="{{ request.form['keyword'] }}">
+                    <input type="search" name="keyword" placeholder="Searched product" class="form-control me-2" value="{{keyword}}">
+                    {% if 'city' in kwargs %}
+                        <input type="hidden" name="city" value="{{current_city}}">
+                    {% endif %}
                     <button type="submit" class="btn">Find</button>
+                </form>
+            </div>
+            <div class="col-sm-3">
+                <form method="get" class="d-flex">
+                    <select name="city" class="form-select">
+                        {% for city in cities %}
+                            {% if city == current_city %}
+                            <option selected value="{{ city }}">{{city.title()}}</option>
+                            {% else %}
+                            <option value="{{ city }}">{{city.title()}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% if 'keyword' in kwargs %}
+                        <input type="hidden" name="keyword" value="{{keyword}}">
+                    {% endif %}
+                    <button type="submit" class="btn">Сhoose</button>
                 </form>
             </div>
         </div>
