@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class TelegramNotificationSettings(BaseSettings):
-    token: str
+    chelyabinsk: str
+    ekaterinburg: str
     id: str
 
     class Config:

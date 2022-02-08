@@ -20,8 +20,8 @@ def send_sms(sms_text):
     return message.sid
 
 
-def send_photo_to_telegram(product):
-    bot = telebot.TeleBot(telegram_config.token)
+def send_photo_to_telegram(product, collection_name):
+    bot = telebot.TeleBot(collection_name)
     last_price = product['history_price'][-1][0]
     last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
     caption = '<a href="{}">{}</a>\n\n{}\n\n{} р. | {} р.\n\n{}'
@@ -62,4 +62,4 @@ if __name__ == "__main__":
     if updated:
     #    send_sms("Появились новые товары!")
         for product in updated:
-            send_photo_to_telegram(product)
+            send_photo_to_telegram(product, collection_name)
