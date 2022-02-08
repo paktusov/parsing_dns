@@ -1,1 +1,1 @@
-poetry run python update_notification.py
+poetry run python update_notification.py chelyabinsk

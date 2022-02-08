@@ -14,21 +14,22 @@ client = pymongo.MongoClient(
     password=mongo_config.password
 )
 db = client[mongo_config.database]
-collection_name = 'chelyabinsk'
+cities = ['chelyabinsk', 'ekaterinburg']
 
 
 @app.route('/')
 def index():
     title = 'Markdown'
     header = 'Markdown'
+    current_city = request.args.get('city', 'chelyabinsk', type=str)
     keyword = request.args.get('keyword', '', type=str)
     query = dict()
     if keyword:
         query['name'] = {'$regex': keyword, '$options': 'i'}
-    products = db[collection_name].find(query)
-    count = db[collection_name].count_documents(query)
+    products = db[current_city].find(query)
+    count = db[current_city].count_documents(query)
     page = request.args.get('page', 1, type=int)
-    per_page = 40
+    per_page = 50
     pages = math.ceil(count // per_page)
     offset = (page - 1) * per_page
     limit = per_page
@@ -49,7 +50,9 @@ def index():
         next_url=next_url,
         pages=pages,
         keyword=keyword,
-        kwargs=kwargs
+        kwargs=kwargs,
+        current_city=current_city,
+        cities=cities
     )
 
 

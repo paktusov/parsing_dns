@@ -13,8 +13,8 @@ class MongoPipeline:
             password=mongo_config.password
         )
         self.db = self.client[mongo_config.database]
-        if hasattr(spider, 'collection_name'):
-            self.collection_name = spider.collection_name
+        if hasattr(spider, 'city'):
+            self.collection_name = spider.city
 
     def close_spider(self, spider):
         self.client.close()

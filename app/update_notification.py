@@ -1,4 +1,5 @@
 import datetime as dt
+import argparse
 import pymongo
 import scrapy
 import telebot
@@ -20,8 +21,8 @@ def send_sms(sms_text):
     return message.sid
 
 
-def send_photo_to_telegram(product):
-    bot = telebot.TeleBot(telegram_config.token)
+def send_photo_to_telegram(product, city):
+    bot = telebot.TeleBot(getattr(telegram_config, 'token_' + city))
     last_price = product['history_price'][-1][0]
     last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
     caption = '<a href="{}">{}</a>\n\n{}\n\n{} р. | {} р.\n\n{}'
@@ -37,11 +38,18 @@ def send_photo_to_telegram(product):
 
 if __name__ == "__main__":
     now = dt.datetime.now().isoformat()
+    parser = argparse.ArgumentParser(description='Markdown updates and send notification')
+    parser.add_argument('city',
+                        default='chelyabinsk',
+                        type=str,
+                        help='Name city where markdown updates and send notification'
+                        )
+    args = parser.parse_args()
 
     # start parsing
     crawler_settings = get_project_settings()
     crawler = CrawlerProcess(settings=crawler_settings)
-    crawler.crawl(DNSSpider)
+    crawler.crawl(DNSSpider, city=args.city)
     crawler.start()
 
     # connection with DB
@@ -51,15 +59,14 @@ if __name__ == "__main__":
         password=mongo_config.password
     )
     db = client[mongo_config.database]
-    collection_name = 'chelyabinsk'
 
     # update removed status in DB
-    removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
+    removed = db[args.city].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
     print(f'Has been removed: {removed.modified_count}')
 
     # notification
-    updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
+    updated = list(db[args.city].find({'last_update': {'$gt': now}}))
     if updated:
     #    send_sms("Появились новые товары!")
         for product in updated:
-            send_photo_to_telegram(product)
+            send_photo_to_telegram(product, args.city)
