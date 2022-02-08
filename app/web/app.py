@@ -28,7 +28,7 @@ def index():
     products = db[collection_name].find(query)
     count = db[collection_name].count_documents(query)
     page = request.args.get('page', 1, type=int)
-    per_page = 40
+    per_page = 50
     pages = math.ceil(count // per_page)
     offset = (page - 1) * per_page
     limit = per_page

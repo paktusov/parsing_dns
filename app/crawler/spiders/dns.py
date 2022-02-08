@@ -23,7 +23,7 @@ class DNSSpider(scrapy.Spider):
     i = 1
 
     def start_requests(self):
-        choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={cities[self.collection_name]}'
+        choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={cities[self.city]}'
         yield SeleniumRequest(url=choice_city, callback=self.pass_result)
         start_page = 'https://www.dns-shop.ru/catalog/markdown/'
         yield SeleniumRequest(url=start_page, callback=self.parse_result)
