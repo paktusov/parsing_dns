@@ -37,11 +37,12 @@ def send_photo_to_telegram(product):
 
 if __name__ == "__main__":
     now = dt.datetime.now().isoformat()
+    collection_name = 'chelyabinsk'
 
     # start parsing
     crawler_settings = get_project_settings()
     crawler = CrawlerProcess(settings=crawler_settings)
-    crawler.crawl(DNSSpider)
+    crawler.crawl(DNSSpider, collection_name=collection_name)
     crawler.start()
 
     # connection with DB
@@ -51,13 +52,12 @@ if __name__ == "__main__":
         password=mongo_config.password
     )
     db = client[mongo_config.database]
-    collection_name = 'chelyabinsk'
 
     # update removed status in DB
     removed = db[collection_name].update_many({'last_seen': {'$lt': now}}, {'$set': {'removed': True}})
     print(f'Has been removed: {removed.modified_count}')
 
-    # notification
+    # notification !!!need add collection_name
     updated = list(db[collection_name].find({'last_update': {'$gt': now}}))
     if updated:
     #    send_sms("Появились новые товары!")

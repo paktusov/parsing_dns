@@ -3,7 +3,6 @@ import datetime as dt
 import pytz
 import scrapy
 import re
-from selenium import webdriver
 from scrapy_selenium import SeleniumRequest
 from crawler.items import ProductItem
 
@@ -13,21 +12,21 @@ def parse_price(price: str) -> Optional[int]:
         return None
     return int(re.sub(r"\D+", "", price))
 
-cities = {'chelyabinsk': 'https://www.dns-shop.ru/ajax/change-city/?city_guid=b464725e-819d-11de-b404-00151716f9f5',
-          'ekaterinburg': 'https://www.dns-shop.ru/ajax/change-city/?city_guid=83878977-f329-11dd-9648-00151716f9f5'
+
+cities = {'chelyabinsk': 'b464725e-819d-11de-b404-00151716f9f5',
+          'ekaterinburg': '83878977-f329-11dd-9648-00151716f9f5',
           }
+
 
 class DNSSpider(scrapy.Spider):
     name = "dns"
     i = 1
-    collection_name = 'chelyabinsk'
-
 
     def start_requests(self):
-        choice_city = cities[self.collection_name]
-        yield SeleniumRequest(url=choice_city)
-        star_page = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
-        yield SeleniumRequest(url=star_page, callback=self.parse_result)
+        choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={cities[self.collection_name]}'
+        yield SeleniumRequest(url=choice_city, callback=self.pass_result)
+        start_page = 'https://www.dns-shop.ru/catalog/markdown/'
+        yield SeleniumRequest(url=start_page, callback=self.parse_result)
 
     def parse_result(self, response):
         for product in response.css('div.markdown-page__group-title, div.catalog-product'):
@@ -58,3 +57,6 @@ class DNSSpider(scrapy.Spider):
             self.i += 1
             next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
             yield SeleniumRequest(url=next_page, callback=self.parse_result)
+
+    def pass_result(self, response):
+        pass
