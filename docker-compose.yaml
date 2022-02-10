@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./app/
+      dockerfile: ../deploy/app/Dockerfile
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ./app:/opt/app
+
+#  selenium:
+#    image: selenium/standalone-firefox:4.1.2-20220208
+#    restart: always
+
