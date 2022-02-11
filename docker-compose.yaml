@@ -11,7 +11,11 @@ services:
     volumes:
       - ./app:/opt/app
 
-#  selenium:
-#    image: selenium/standalone-firefox:4.1.2-20220208
-#    restart: always
+  selenium:
+    image: selenium/standalone-firefox:4.1.2-20220208
+    restart: always
+    ports:
+      - 4444:4444
+      - 7900:7900
+    shm_size: '2gb'
 
