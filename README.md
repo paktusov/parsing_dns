@@ -1,4 +1,4 @@
-<h1 align="center"><a target="_blank"  href="http://beeb08c902a0.sn.mynetname.net:5000/">Parsing DNS</a></h1>
+<h1 align="center"><a target="_blank"  href="http://beeb08c902a0.sn.mynetname.net/">Parsing DNS</a></h1>
 
 ## Описание
 
