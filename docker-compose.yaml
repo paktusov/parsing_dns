@@ -6,8 +6,8 @@ services:
       context: ./app/
       dockerfile: ../deploy/app/Dockerfile
     restart: always
-    ports:
-      - 5000:5000
+    expose:
+      - "5000"
     volumes:
       - ./app:/opt/app
 
@@ -18,4 +18,18 @@ services:
       - 4444:4444
       - 7900:7900
     shm_size: '2gb'
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./deploy/nginx/Dockerfile
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./app/web/static:/etc/nginx/date/static
+    links:
+      - app
+
+
 
