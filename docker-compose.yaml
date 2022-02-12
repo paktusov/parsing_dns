@@ -3,8 +3,8 @@ version: "3.7"
 services:
   app:
     build:
-      context: ./app/
-      dockerfile: ../deploy/app/Dockerfile
+      context: .
+      dockerfile: ./deploy/app/Dockerfile
     restart: always
     expose:
       - "5000"
