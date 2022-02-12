@@ -27,7 +27,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./app/web/static:/etc/nginx/date/static
+      - ./app/web/static:/var/www/static/
     links:
       - app
 
