@@ -17,6 +17,7 @@ python-dotenv = "^0.19.2"
 selenium = "^4.1.0"
 scrapy-selenium = {git = "https://github.com/createdbysk/scrapy-selenium.git", rev = "d21d251f836bed0eb14a3a6edc95bf5034b7dbb5"}
 pymongo = {version = "^4.0.1", extras = ["srv"]}
+celery = {extras = ["redis"], version = "^5.2.3"}
 
 [tool.poetry.dev-dependencies]
 
