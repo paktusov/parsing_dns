@@ -42,5 +42,7 @@ services:
       context: .
       dockerfile: ./deploy/celery/Dockerfile
     restart: always
+    environment:
+      - TZ=Asia/Yekaterinburg
     volumes:
       - ./app:/opt/app

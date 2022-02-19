@@ -1,1 +1,0 @@
-poetry run python update_notification.py chelyabinsk
