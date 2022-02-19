@@ -18,5 +18,5 @@ ITEM_PIPELINES = {
 }
 
 SELENIUM_DRIVER_NAME = 'firefox'
-SELENIUM_COMMAND_EXECUTOR = 'http://localhost:4444/wd/hub'
+SELENIUM_COMMAND_EXECUTOR = 'http://selenium:4444/wd/hub'
 SELENIUM_DRIVER_ARGUMENTS = ['-headless']

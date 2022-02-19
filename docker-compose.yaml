@@ -37,5 +37,10 @@ services:
     ports:
       - 6379:6379
 
-
-
+  celery:
+    build:
+      context: .
+      dockerfile: ./deploy/celery/Dockerfile
+    restart: always
+    volumes:
+      - ./app:/opt/app
