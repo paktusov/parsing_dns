@@ -8,7 +8,7 @@ app.conf.timezone = 'Asia/Yekaterinburg'
 app.conf.beat_schedule = {
     'parsing_chelyabinsk_every_20_minutes': {
         'task': 'crawler.tasks.start_parsing',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/20'),
         'args': ('chelyabinsk',)
     },
     'parsing_ekaterinburg_once_a_day': {
