@@ -1,5 +1,4 @@
 import scrapy
-from dataclasses import dataclass
 
 
 class ProductItem(scrapy.Item):

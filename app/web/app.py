@@ -38,6 +38,9 @@ def index():
     prev_url = url_for('index', page=page-1, **kwargs) if page > 1 else None
     next_url = url_for('index', page=page+1, **kwargs) if page < pages else None
     current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
+    for i in range(len(current_products)):
+        if isinstance(current_products[i]['last_update'], str):
+            current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
     return render_template(
         'index.html',
         products=current_products,

@@ -20,16 +20,15 @@ class MongoPipeline:
             self.collection_name = spider.city
 
     def close_spider(self, spider):
-        if hasattr(spider, 'now_time'):
-            removed = self.db[self.collection_name].update_many({'last_seen': {'$lt': self.now_time}},
-                                                                {'$set': {'removed': True}})
-            logging.debug(f'Has been removed: {removed.modified_count}')
-            updated = list(self.db[self.collection_name].find({'last_update': {'$gt': self.now_time}}))
-            if updated:
-                #send_sms("Появились новые товары!")
-                for product in updated:
-                    send_photo_to_telegram(product, spider.city)
-            logging.debug(f'Has been updated: {len(updated)}')
+        removed = self.db[self.collection_name].update_many({'last_seen': {'$lt': self.now_time}},
+                                                            {'$set': {'removed': True}})
+        logging.debug(f'Has been removed: {removed.modified_count}')
+        updated = list(self.db[self.collection_name].find({'last_update': {'$gt': self.now_time}}))
+        if updated:
+            #send_sms("Появились новые товары!")
+            for product in updated:
+                send_photo_to_telegram(product, spider.city)
+        logging.debug(f'Has been updated: {len(updated)}')
         self.client.close()
 
     def process_item(self, item, spider):

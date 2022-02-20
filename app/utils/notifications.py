@@ -17,13 +17,13 @@ def send_sms(sms_text):
 def send_photo_to_telegram(product, city):
     bot = telebot.TeleBot(getattr(telegram_config, 'token_' + city))
     last_price = product['history_price'][-1][0]
-    last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
+    #last_update_fmt = dt.datetime.fromisoformat(product['last_update']).strftime("%Y.%m.%d %H:%M")
     caption = '<a href="{}">{}</a>\n\n{}\n\n{} р. | {} р.\n\n{}'
     format_caption = caption.format(product['link'],
                                     product['name'],
                                     product['description'],
                                     last_price,
                                     product['full_price'],
-                                    last_update_fmt
+                                    product['last_update']
                                     )
     bot.send_photo(telegram_config.id, photo=product['image'], caption=format_caption, parse_mode='HTML')

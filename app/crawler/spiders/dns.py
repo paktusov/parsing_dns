@@ -20,7 +20,6 @@ cities = {'chelyabinsk': 'b464725e-819d-11de-b404-00151716f9f5',
 
 class DNSSpider(scrapy.Spider):
     name = "dns"
-    i = 1
 
     def start_requests(self):
         choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={cities[self.city]}'
@@ -28,6 +27,7 @@ class DNSSpider(scrapy.Spider):
 
     def first_page(self, response):
         start_page = 'https://www.dns-shop.ru/catalog/markdown/'
+        self.i = 1
         yield SeleniumRequest(url=start_page, callback=self.parse_result)
 
     def parse_result(self, response):
