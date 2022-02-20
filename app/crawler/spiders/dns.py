@@ -27,7 +27,6 @@ class DNSSpider(scrapy.Spider):
 
     def first_page(self, response):
         start_page = 'https://www.dns-shop.ru/catalog/markdown/'
-        self.i = 1
         yield SeleniumRequest(url=start_page, callback=self.parse_result)
 
     def parse_result(self, response):
@@ -53,9 +52,9 @@ class DNSSpider(scrapy.Spider):
                     last_seen=now,
                     removed=False
                     )
-
+        page_num = 1
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
         if next_page is not None:
-            self.i += 1
-            next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
+            page_num += 1
+            next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={page_num}'
             yield SeleniumRequest(url=next_page, callback=self.parse_result)
