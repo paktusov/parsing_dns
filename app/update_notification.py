@@ -8,10 +8,9 @@ from crawler.spiders.dns import DNSSpider
 
 
 def parsing_city(city):
-    now = dt.datetime.now().isoformat()
     crawler_settings = get_project_settings()
     crawler = CrawlerProcess(settings=crawler_settings)
-    crawler.crawl(DNSSpider, city=city, now_time=now)
+    crawler.crawl(DNSSpider, city=city)
     crawler.start()
 
 

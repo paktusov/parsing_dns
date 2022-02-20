@@ -18,7 +18,6 @@ class MongoPipeline:
             self.collection_name = spider.city
 
     def close_spider(self, spider):
-        #нужно попробовать брать время из spider, а так же сохранять в mongo в dt
         if hasattr(spider, 'now_time'):
             removed = self.db[self.collection_name].update_many({'last_seen': {'$lt': spider.now_time}},
                                                                 {'$set': {'removed': True}})

@@ -21,6 +21,7 @@ cities = {'chelyabinsk': 'b464725e-819d-11de-b404-00151716f9f5',
 class DNSSpider(scrapy.Spider):
     name = "dns"
     i = 1
+    now_time = dt.datetime.now().isoformat()
 
     def start_requests(self):
         choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={cities[self.city]}'
@@ -38,7 +39,7 @@ class DNSSpider(scrapy.Spider):
                 name, *description = product.css('a.catalog-product__name span::text').getall()
                 description = description[0].strip("[]") if description else None
                 link = response.urljoin(product.css('a.catalog-product__name::attr(href)').get())
-                now = dt.datetime.now().isoformat()
+                now = dt.datetime.utcnow()
 
                 yield ProductItem(
                     _id=link.strip("/").split("/")[-1],

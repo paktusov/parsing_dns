@@ -1,9 +1,14 @@
 from celery import Celery
 from celery.schedules import crontab
 from update_notification import parsing_city
+from config import celery_config
 
-app = Celery('tasks', broker='redis://redis')
-app.conf.timezone = 'Asia/Yekaterinburg'
+app = Celery('tasks', broker=celery_config.broker)
+app.conf.update(
+    worker_max_tasks_per_child=celery_config.worker_max_tasks_per_child,
+    broker_pool_limit=celery_config.broker_pool_limit,
+    timezone=celery_config.timezone,
+)
 
 app.conf.beat_schedule = {
     'parsing_chelyabinsk_every_20_minutes': {

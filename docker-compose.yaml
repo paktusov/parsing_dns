@@ -40,9 +40,10 @@ services:
   celery:
     build:
       context: .
-      dockerfile: ./deploy/celery/Dockerfile
+      dockerfile: ./deploy/app/Dockerfile
     restart: always
     environment:
       - TZ=Asia/Yekaterinburg
     volumes:
       - ./app:/opt/app
+    command: ["poetry", "run", "celery", "-A", "crawler.tasks", "worker", "-B"]
