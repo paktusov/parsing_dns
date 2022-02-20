@@ -1,4 +1,3 @@
-import datetime as dt
 import argparse
 import scrapy
 import crawler.settings

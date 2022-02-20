@@ -36,15 +36,16 @@ class MongoDBSettings(BaseSettings):
 
 
 class CelerySettings(BaseSettings):
-    broker = 'redis://redis'
-    timezone = 'Asia/Yekaterinburg'
-    worker_max_tasks_per_child = 1
+    broker: str = 'redis://redis'
+    timezone: str = 'Asia/Yekaterinburg'
+    worker_max_tasks_per_child: int = 1
     broker_pool_limit: bool = None
 
+
 class SeleniumSettings(BaseSettings):
-    driver_name = 'firefox'
-    command_executor = 'http://selenium:4444/wd/hub'
-    driver_arguments = ['-headless']
+    driver_name: str = 'firefox'
+    command_executor: str = 'http://selenium:4444/wd/hub'
+    driver_arguments: list = ['-headless']
 
 
 telegram_config = TelegramNotificationSettings()

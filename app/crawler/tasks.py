@@ -1,7 +1,19 @@
 from celery import Celery
 from celery.schedules import crontab
-from start_parsing import parsing_city
+import scrapy
+import crawler.settings
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
+from crawler.spiders.dns import DNSSpider
 from config import celery_config
+
+
+def parsing_city(city):
+    crawler_settings = get_project_settings()
+    crawler = CrawlerProcess(settings=crawler_settings)
+    crawler.crawl(DNSSpider, city=city)
+    crawler.start()
+
 
 app = Celery('tasks', broker=celery_config.broker)
 app.conf.update(
@@ -22,6 +34,7 @@ app.conf.beat_schedule = {
         'args': ('ekaterinburg',)
     }
 }
+
 
 @app.task
 def start_parsing(city):
