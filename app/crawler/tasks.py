@@ -1,6 +1,6 @@
 from celery import Celery
 from celery.schedules import crontab
-from update_notification import parsing_city
+from start_parsing import parsing_city
 from config import celery_config
 
 app = Celery('tasks', broker=celery_config.broker)
