@@ -20,7 +20,6 @@ cities = {'chelyabinsk': 'b464725e-819d-11de-b404-00151716f9f5',
 
 class DNSSpider(scrapy.Spider):
     name = "dns"
-    i = 1
 
     def start_requests(self):
         choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={cities[self.city]}'
@@ -38,7 +37,7 @@ class DNSSpider(scrapy.Spider):
                 name, *description = product.css('a.catalog-product__name span::text').getall()
                 description = description[0].strip("[]") if description else None
                 link = response.urljoin(product.css('a.catalog-product__name::attr(href)').get())
-                now = dt.datetime.now().isoformat()
+                now = dt.datetime.now()
 
                 yield ProductItem(
                     _id=link.strip("/").split("/")[-1],
@@ -53,9 +52,9 @@ class DNSSpider(scrapy.Spider):
                     last_seen=now,
                     removed=False
                     )
-
+        page_num = 1
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
         if next_page is not None:
-            self.i += 1
-            next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={self.i}'
+            page_num += 1
+            next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={page_num}'
             yield SeleniumRequest(url=next_page, callback=self.parse_result)

@@ -35,6 +35,21 @@ class MongoDBSettings(BaseSettings):
         env_prefix = 'mongodb_'
 
 
+class CelerySettings(BaseSettings):
+    broker: str = 'redis://redis'
+    timezone: str = 'Asia/Yekaterinburg'
+    worker_max_tasks_per_child: int = 1
+    broker_pool_limit: bool = None
+
+
+class SeleniumSettings(BaseSettings):
+    driver_name: str = 'firefox'
+    command_executor: str = 'http://selenium:4444/wd/hub'
+    driver_arguments: list = ['-headless']
+
+
 telegram_config = TelegramNotificationSettings()
 twilio_config = TwilioSMSNotificationSettings()
 mongo_config = MongoDBSettings()
+celery_config = CelerySettings()
+selenium_config = SeleniumSettings()

@@ -31,5 +31,19 @@ services:
     links:
       - app
 
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
 
-
+  celery:
+    build:
+      context: .
+      dockerfile: ./deploy/app/Dockerfile
+    restart: always
+    environment:
+      - TZ=Asia/Yekaterinburg
+    volumes:
+      - ./app:/opt/app
+    command: ["poetry", "run", "celery", "-A", "crawler.tasks", "worker", "-B"]

@@ -1,12 +1,15 @@
-from itemadapter import ItemAdapter
+import datetime as dt
 import logging
 import pymongo
+from itemadapter import ItemAdapter
 from config import mongo_config
+from utils.notifications import send_sms, send_photo_to_telegram
 
 
 class MongoPipeline:
 
     def open_spider(self, spider):
+        self.now_time = dt.datetime.now()
         self.client = pymongo.MongoClient(
             mongo_config.uri,
             username=mongo_config.username,
@@ -17,6 +20,15 @@ class MongoPipeline:
             self.collection_name = spider.city
 
     def close_spider(self, spider):
+        removed = self.db[self.collection_name].update_many({'last_seen': {'$lt': self.now_time}},
+                                                            {'$set': {'removed': True}})
+        logging.debug(f'Has been removed: {removed.modified_count}')
+        updated = list(self.db[self.collection_name].find({'last_update': {'$gt': self.now_time}}))
+        if updated:
+            #send_sms("Появились новые товары!")
+            for product in updated:
+                send_photo_to_telegram(product, spider.city)
+        logging.debug(f'Has been updated: {len(updated)}')
         self.client.close()
 
     def process_item(self, item, spider):

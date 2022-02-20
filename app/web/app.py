@@ -6,7 +6,7 @@ from config import mongo_config
 
 
 app = Flask(__name__)
-app.debug = False
+app.debug = True
 
 client = pymongo.MongoClient(
     mongo_config.uri,
@@ -39,7 +39,8 @@ def index():
     next_url = url_for('index', page=page+1, **kwargs) if page < pages else None
     current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
     for i in range(len(current_products)):
-        current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
+        if isinstance(current_products[i]['last_update'], str):
+            current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
     return render_template(
         'index.html',
         products=current_products,

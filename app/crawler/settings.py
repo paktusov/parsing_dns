@@ -1,5 +1,5 @@
 from shutil import which
-from config import mongo_config
+from config import mongo_config, selenium_config
 
 BOT_NAME = 'crawler'
 SPIDER_MODULES = ['crawler.spiders']
@@ -17,6 +17,6 @@ ITEM_PIPELINES = {
     'crawler.pipelines.MongoPipeline': 300,
 }
 
-SELENIUM_DRIVER_NAME = 'firefox'
-SELENIUM_COMMAND_EXECUTOR = 'http://localhost:4444/wd/hub'
-SELENIUM_DRIVER_ARGUMENTS = ['-headless']
+SELENIUM_DRIVER_NAME = selenium_config.driver_name
+SELENIUM_COMMAND_EXECUTOR = selenium_config.command_executor
+SELENIUM_DRIVER_ARGUMENTS = selenium_config.driver_arguments
