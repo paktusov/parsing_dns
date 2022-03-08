@@ -31,11 +31,9 @@ client = pymongo.MongoClient(
 )
 db = client[mongo_config.database]
 cities = list(db['cities'].find())
-
 hour = 15
 minute = 0
 delta = 10
-
 for city in cities:
     app.conf.beat_schedule[f'parsing_{city["name"]}_once_a_day'] = {
         'task': 'crawler.tasks.start_parsing',
