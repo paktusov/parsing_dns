@@ -1,4 +1,3 @@
-import datetime as dt
 import telebot
 from twilio.rest import Client
 from config import telegram_config, twilio_config

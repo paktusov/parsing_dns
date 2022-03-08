@@ -1,10 +1,12 @@
 from typing import Optional
 import datetime as dt
-import pytz
 import scrapy
 import re
+import pymongo
 from scrapy_selenium import SeleniumRequest
 from crawler.items import ProductItem
+from config import mongo_config
+from mongo import db
 
 
 def parse_price(price: str) -> Optional[int]:
@@ -13,16 +15,13 @@ def parse_price(price: str) -> Optional[int]:
     return int(re.sub(r"\D+", "", price))
 
 
-cities = {'chelyabinsk': 'b464725e-819d-11de-b404-00151716f9f5',
-          'ekaterinburg': '83878977-f329-11dd-9648-00151716f9f5',
-          }
-
-
 class DNSSpider(scrapy.Spider):
     name = "dns"
+    page_num = 1
 
     def start_requests(self):
-        choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={cities[self.city]}'
+        city_link_suffix = db['cities'].find_one({"name": self.city})['link_suffix']
+        choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={city_link_suffix}'
         yield SeleniumRequest(url=choice_city, callback=self.first_page)
 
     def first_page(self, response):
@@ -52,9 +51,9 @@ class DNSSpider(scrapy.Spider):
                     last_seen=now,
                     removed=False
                     )
-        page_num = 1
+
         next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
         if next_page is not None:
-            page_num += 1
-            next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={page_num}'
+            self.page_num += 1
+            next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={self.page_num}'
             yield SeleniumRequest(url=next_page, callback=self.parse_result)
