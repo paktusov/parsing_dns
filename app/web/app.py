@@ -14,13 +14,16 @@ client = pymongo.MongoClient(
     password=mongo_config.password
 )
 db = client[mongo_config.database]
-cities = ['chelyabinsk', 'ekaterinburg']
 
 
 @app.route('/')
 def index():
     title = 'Markdown'
     header = 'Markdown'
+    cities_name = []
+    cities = list(db['cities'].find())
+    for city in cities:
+        cities_name.append(city['name'])
     current_city = request.args.get('city', 'chelyabinsk', type=str)
     keyword = request.args.get('keyword', '', type=str)
     query = dict()
@@ -53,7 +56,7 @@ def index():
         keyword=keyword,
         kwargs=kwargs,
         current_city=current_city,
-        cities=cities
+        cities=cities_name
     )
 
 
