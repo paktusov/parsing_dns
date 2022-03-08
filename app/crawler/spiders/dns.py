@@ -6,6 +6,7 @@ import pymongo
 from scrapy_selenium import SeleniumRequest
 from crawler.items import ProductItem
 from config import mongo_config
+from mongo import db
 
 
 def parse_price(price: str) -> Optional[int]:
@@ -19,15 +20,8 @@ class DNSSpider(scrapy.Spider):
     page_num = 1
 
     def start_requests(self):
-        client = pymongo.MongoClient(
-            mongo_config.uri,
-            username=mongo_config.username,
-            password=mongo_config.password
-        )
-        db = client[mongo_config.database]
         city_link_suffix = db['cities'].find_one({"name": self.city})['link_suffix']
         choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={city_link_suffix}'
-        client.close()
         yield SeleniumRequest(url=choice_city, callback=self.first_page)
 
     def first_page(self, response):

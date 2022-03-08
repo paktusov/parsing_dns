@@ -7,21 +7,15 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider
 from config import celery_config, mongo_config
+from mongo import db
 
 
 def init_schedule_for_cities():
-    client = pymongo.MongoClient(
-        mongo_config.uri,
-        username=mongo_config.username,
-        password=mongo_config.password
-    )
-    db = client[mongo_config.database]
     cities = list(db['cities'].find())
     for city in cities:
-        schedule = dict(city['schedule'])
         app.conf.beat_schedule[f'parsing_{city["name"]}'] = {
             'task': 'crawler.tasks.start_parsing',
-            'schedule': crontab(minute=schedule['minute'], hour=schedule['hour']),
+            'schedule': crontab(**city['schedule']),
             'args': (city['name'],)
         }
 

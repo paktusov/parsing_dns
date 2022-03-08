@@ -3,17 +3,11 @@ import datetime as dt
 import pymongo
 from flask import Flask, render_template, request, url_for, redirect
 from config import mongo_config
+from mongo import db
 
 
 app = Flask(__name__)
 app.debug = True
-
-client = pymongo.MongoClient(
-    mongo_config.uri,
-    username=mongo_config.username,
-    password=mongo_config.password
-)
-db = client[mongo_config.database]
 
 
 @app.route('/')
