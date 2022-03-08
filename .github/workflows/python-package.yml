@@ -22,17 +22,20 @@ jobs:
         python-version: ${{ matrix.python-version }}
         
     - name: Install dependencies
+      working-directory: ./app
       run: |
         pip install poetry
         poetry config virtualenvs.create false
         poetry install
 
     - name: Lint with flake8
+      working-directory: ./app
       run: |
         poetry add flake8
         flake8 .
     
     - name: Test with pytest
+      working-directory: ./app
       run: |
         poetry add pytest
         pytest
