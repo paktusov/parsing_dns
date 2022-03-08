@@ -33,9 +33,3 @@ jobs:
       run: |
         poetry add flake8
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    
-    - name: Test with pytest
-      working-directory: ./app
-      run: |
-        poetry add pytest
-        pytest
