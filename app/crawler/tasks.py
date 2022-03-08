@@ -1,3 +1,4 @@
+import pymongo
 from celery import Celery
 from celery.schedules import crontab
 import scrapy
@@ -5,7 +6,7 @@ import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider
-from config import celery_config
+from config import celery_config, mongo_config
 
 
 app = Celery('tasks', broker=celery_config.broker)
@@ -20,13 +21,22 @@ app.conf.beat_schedule = {
         'task': 'crawler.tasks.start_parsing',
         'schedule': crontab(minute='*/20'),
         'args': ('chelyabinsk',)
-    },
-    'parsing_ekaterinburg_once_a_day': {
-        'task': 'crawler.tasks.start_parsing',
-        'schedule': crontab(minute=0, hour=2),
-        'args': ('ekaterinburg',)
     }
 }
+
+client = pymongo.MongoClient(
+    mongo_config.uri,
+    username=mongo_config.username,
+    password=mongo_config.password
+)
+db = client[mongo_config.database]
+cities = list(db['cities'].find())
+for city in cities:
+    app.conf.beat_schedule[f'parsing_{city["name"]}_once_a_day'] = {
+        'task': 'crawler.tasks.start_parsing',
+        'schedule': crontab(minute=30, hour=13),
+        'args': (city["name"],)
+    }
 
 
 @app.task
