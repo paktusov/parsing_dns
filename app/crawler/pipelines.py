@@ -23,7 +23,6 @@ class MongoPipeline:
             for product in updated:
                 send_photo_to_telegram(product, spider.city)
         logging.debug(f'Has been updated: {len(updated)}')
-        #self.client.close()
 
     def process_item(self, item, spider):
         id = dict(item)["_id"]
