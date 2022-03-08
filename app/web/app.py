@@ -20,7 +20,7 @@ db = client[mongo_config.database]
 def index():
     title = 'Markdown'
     header = 'Markdown'
-    cities_name = [city['name'] for city in list(db['cities'].find())]
+    cities_name = [city['name'] for city in db['cities'].find()]
     current_city = request.args.get('city', 'chelyabinsk', type=str)
     keyword = request.args.get('keyword', '', type=str)
     query = dict()

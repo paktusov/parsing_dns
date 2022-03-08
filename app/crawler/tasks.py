@@ -9,40 +9,31 @@ from crawler.spiders.dns import DNSSpider
 from config import celery_config, mongo_config
 
 
+def init_schedule_for_cities():
+    client = pymongo.MongoClient(
+        mongo_config.uri,
+        username=mongo_config.username,
+        password=mongo_config.password
+    )
+    db = client[mongo_config.database]
+    cities = list(db['cities'].find())
+    for city in cities:
+        schedule = dict(city['schedule'])
+        app.conf.beat_schedule[f'parsing_{city["name"]}'] = {
+            'task': 'crawler.tasks.start_parsing',
+            'schedule': crontab(minute=schedule['minute'], hour=schedule['hour']),
+            'args': (city['name'],)
+        }
+
+
 app = Celery('tasks', broker=celery_config.broker)
 app.conf.update(
     worker_max_tasks_per_child=celery_config.worker_max_tasks_per_child,
     broker_pool_limit=celery_config.broker_pool_limit,
     timezone=celery_config.timezone,
 )
-
-app.conf.beat_schedule = {
-    'parsing_chelyabinsk_every_20_minutes': {
-        'task': 'crawler.tasks.start_parsing',
-        'schedule': crontab(minute='*/20'),
-        'args': ('chelyabinsk',)
-    }
-}
-
-client = pymongo.MongoClient(
-    mongo_config.uri,
-    username=mongo_config.username,
-    password=mongo_config.password
-)
-db = client[mongo_config.database]
-cities = list(db['cities'].find())
-hour = 15
-minute = 0
-delta = 10
-for city in cities:
-    app.conf.beat_schedule[f'parsing_{city["name"]}_once_a_day'] = {
-        'task': 'crawler.tasks.start_parsing',
-        'schedule': crontab(minute=minute, hour=hour),
-        'args': (city["name"],)
-    }
-    if minute >= 60 - delta:
-        hour += 1
-    minute == (minute + delta) % 60
+app.conf.beat_schedule = dict()
+init_schedule_for_cities()
 
 
 @app.task
