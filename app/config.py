@@ -3,6 +3,7 @@ from pydantic import BaseSettings
 from dotenv import load_dotenv
 load_dotenv()
 
+
 class TelegramNotificationSettings(BaseSettings):
     token_chelyabinsk: str
     token_ekaterinburg: str

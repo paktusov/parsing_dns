@@ -1,6 +1,5 @@
 from typing import Optional
 import datetime as dt
-import pytz
 import scrapy
 import re
 import pymongo

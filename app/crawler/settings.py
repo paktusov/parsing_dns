@@ -1,5 +1,4 @@
-from shutil import which
-from config import mongo_config, selenium_config
+from config import selenium_config
 
 BOT_NAME = 'crawler'
 SPIDER_MODULES = ['crawler.spiders']
