@@ -15,12 +15,6 @@ def parse_price(price: str) -> Optional[int]:
     return int(re.sub(r"\D+", "", price))
 
 
-
-#cities = {'chelyabinsk': 'b464725e-819d-11de-b404-00151716f9f5',
-#          'ekaterinburg': '83878977-f329-11dd-9648-00151716f9f5',
-#          }
-
-
 class DNSSpider(scrapy.Spider):
     name = "dns"
     page_num = 1
