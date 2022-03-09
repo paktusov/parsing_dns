@@ -1,8 +1,7 @@
 import math
 import datetime as dt
 import pymongo
-from flask import Flask, render_template, request, url_for, redirect
-from config import mongo_config
+from flask import Flask, render_template, request, url_for
 from mongo import db
 
 

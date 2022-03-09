@@ -1,4 +1,3 @@
-import pymongo
 from celery import Celery
 from celery.schedules import crontab
 import scrapy
@@ -6,7 +5,7 @@ import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider
-from config import celery_config, mongo_config
+from config import celery_config
 from mongo import db
 
 

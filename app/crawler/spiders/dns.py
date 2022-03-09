@@ -2,10 +2,8 @@ from typing import Optional
 import datetime as dt
 import scrapy
 import re
-import pymongo
 from scrapy_selenium import SeleniumRequest
 from crawler.items import ProductItem
-from config import mongo_config
 from mongo import db
 
 
