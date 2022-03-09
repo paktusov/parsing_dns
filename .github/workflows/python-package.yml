@@ -30,6 +30,12 @@ jobs:
         pip install poetry
         poetry config virtualenvs.create false
         poetry install
+        
+    - name: Lint with isort
+      working-directory: ./app
+      run: |
+        poetry add isort
+        isort .
 
     - name: Lint with flake8
       working-directory: ./app
