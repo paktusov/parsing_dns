@@ -19,6 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -33,9 +34,7 @@ jobs:
         
     - name: Lint with isort
       working-directory: ./app
-      run: |
-        poetry add isort
-        isort .
+      uses: jamescurtin/isort-action@master
 
     - name: Lint with flake8
       working-directory: ./app
