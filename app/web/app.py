@@ -1,9 +1,9 @@
-import math
 import datetime as dt
+import math
+
 import pymongo
 from flask import Flask, render_template, request, url_for
 from mongo import get_db
-
 
 app = Flask(__name__)
 app.debug = True

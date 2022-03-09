@@ -1,6 +1,6 @@
 import telebot
-from twilio.rest import Client
 from config import telegram_config, twilio_config
+from twilio.rest import Client
 
 
 def send_sms(sms_text):

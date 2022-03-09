@@ -1,10 +1,10 @@
 from celery import Celery
 from celery.schedules import crontab
+from config import celery_config
+from crawler.spiders.dns import DNSSpider
+from mongo import get_db
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from crawler.spiders.dns import DNSSpider
-from config import celery_config
-from mongo import get_db
 
 
 def init_schedule_for_cities():

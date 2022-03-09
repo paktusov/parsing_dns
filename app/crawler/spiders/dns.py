@@ -1,10 +1,11 @@
-from typing import Optional
 import datetime as dt
-import scrapy
 import re
-from scrapy_selenium import SeleniumRequest
+from typing import Optional
+
+import scrapy
 from crawler.items import ProductItem
 from mongo import get_db
+from scrapy_selenium import SeleniumRequest
 
 
 def parse_price(price: str) -> Optional[int]:
