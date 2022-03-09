@@ -15,7 +15,7 @@ class MongoPipeline:
 
     def close_spider(self, spider):
         removed = self.db[self.collection_name].update_many({'last_seen': {'$lt': self.now_time}},
-                                                       {'$set': {'removed': True}})
+                                                            {'$set': {'removed': True}})
         logging.debug(f'Has been removed: {removed.modified_count}')
         updated = list(self.db[self.collection_name].find({'last_update': {'$gt': self.now_time}}))
         if updated:

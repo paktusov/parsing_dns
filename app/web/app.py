@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.debug = True
 db = get_db()
 
+
 @app.route('/')
 def index():
     title = 'Markdown'
