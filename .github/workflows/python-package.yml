@@ -33,7 +33,6 @@ jobs:
         poetry install
         
     - name: Lint with isort
-      working-directory: ./app
       uses: jamescurtin/isort-action@master
 
     - name: Lint with flake8
