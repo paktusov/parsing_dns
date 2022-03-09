@@ -4,7 +4,7 @@ import scrapy
 import re
 from scrapy_selenium import SeleniumRequest
 from crawler.items import ProductItem
-from mongo import db
+from mongo import get_db
 
 
 def parse_price(price: str) -> Optional[int]:
@@ -18,6 +18,7 @@ class DNSSpider(scrapy.Spider):
     page_num = 1
 
     def start_requests(self):
+        db = get_db()
         city_link_suffix = db['cities'].find_one({"name": self.city})['link_suffix']
         choice_city = f'https://www.dns-shop.ru/ajax/change-city/?city_guid={city_link_suffix}'
         yield SeleniumRequest(url=choice_city, callback=self.first_page)

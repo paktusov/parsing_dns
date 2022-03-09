@@ -2,12 +2,12 @@ import math
 import datetime as dt
 import pymongo
 from flask import Flask, render_template, request, url_for
-from mongo import db
+from mongo import get_db
 
 
 app = Flask(__name__)
 app.debug = True
-
+db = get_db()
 
 @app.route('/')
 def index():

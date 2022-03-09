@@ -1,5 +1,4 @@
 import argparse
-import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider

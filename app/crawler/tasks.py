@@ -1,14 +1,14 @@
 from celery import Celery
 from celery.schedules import crontab
-import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from crawler.spiders.dns import DNSSpider
 from config import celery_config
-from mongo import db
+from mongo import get_db
 
 
 def init_schedule_for_cities():
+    db = get_db()
     cities = list(db['cities'].find())
     for city in cities:
         app.conf.beat_schedule[f'parsing_{city["name"]}'] = {
