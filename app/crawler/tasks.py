@@ -1,6 +1,5 @@
 from celery import Celery
 from celery.schedules import crontab
-import scrapy
 import crawler.settings
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
@@ -31,7 +30,6 @@ init_schedule_for_cities()
 
 @app.task
 def start_parsing(city):
-    crawler_settings = get_project_settings()
-    crawler = CrawlerProcess(settings=crawler_settings)
-    crawler.crawl(DNSSpider, city=city)
-    crawler.start()
+    process = CrawlerProcess(get_project_settings())
+    process.crawl(DNSSpider, city=city)
+    process.start()
