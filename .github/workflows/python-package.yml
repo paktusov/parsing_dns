@@ -35,4 +35,4 @@ jobs:
       working-directory: ./app
       run: |
         poetry add flake8
-        flake8 . --count --exit-zero --max-line-length=127 --statistics --per-file-ignores='./config.py:F401 ./crawler/pipelines.py:F401, E265'
+        flake8 . --count --max-line-length=127 --statistics --show-source --per-file-ignores='./config.py:F401 ./crawler/pipelines.py:F401, E265'
