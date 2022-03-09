@@ -3,7 +3,7 @@ import logging
 
 from itemadapter import ItemAdapter
 from mongo import get_db
-from utils.notifications import send_sms, send_photo_to_telegram
+from utils.notifications import send_photo_to_telegram, send_sms
 
 
 class MongoPipeline:
