@@ -31,10 +31,8 @@ def index():
     kwargs.pop('page', None)
     prev_url = url_for('index', page=page-1, **kwargs) if page > 1 else None
     next_url = url_for('index', page=page+1, **kwargs) if page < pages else None
+    pagin_list_pages = [i + 1 for i in range(page - 3, page + 2) if i >= 0 and i <= pages]
     current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
-    for i in range(len(current_products)):
-        if isinstance(current_products[i]['last_update'], str):
-            current_products[i]['last_update'] = dt.datetime.fromisoformat(current_products[i]['last_update'])
     return render_template(
         'index.html',
         products=current_products,
@@ -47,7 +45,8 @@ def index():
         keyword=keyword,
         kwargs=kwargs,
         current_city=current_city,
-        cities=cities_name
+        cities=cities_name,
+        pagin_list_pages=pagin_list_pages
     )
 
 
