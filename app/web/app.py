@@ -2,12 +2,13 @@ import math
 
 import pymongo
 from flask import Flask, render_template, request, url_for
+from flask_paginate import Pagination, get_page_parameter
 from mongo import get_db
+
 
 app = Flask(__name__)
 app.debug = True
 db = get_db()
-
 
 @app.route('/')
 def index():
@@ -21,31 +22,24 @@ def index():
         query['name'] = {'$regex': keyword, '$options': 'i'}
     products = db[current_city].find(query)
     count = db[current_city].count_documents(query)
-    page = request.args.get('page', 1, type=int)
+    page = request.args.get(get_page_parameter(), 1, type=int)
     per_page = 50
-    pages = math.ceil(count // per_page)
     offset = (page - 1) * per_page
     limit = per_page
     kwargs = dict(request.args)
     kwargs.pop('page', None)
-    prev_url = url_for('index', page=page-1, **kwargs) if page > 1 else None
-    next_url = url_for('index', page=page+1, **kwargs) if page < pages else None
-    pagin_list_pages = [i + 1 for i in range(page - 3, page + 2) if i >= 0 and i <= pages]
     current_products = list(products.sort("last_update", pymongo.DESCENDING).skip(offset).limit(limit))
+    pagination = Pagination(page=page, total=count, record_name='products', per_page=per_page)
     return render_template(
         'index.html',
         products=current_products,
         title=title,
         header=header,
-        page=page,
-        prev_url=prev_url,
-        next_url=next_url,
-        pages=pages,
         keyword=keyword,
         kwargs=kwargs,
         current_city=current_city,
         cities=cities_name,
-        pagin_list_pages=pagin_list_pages
+        pagination=pagination,
     )
 
 
