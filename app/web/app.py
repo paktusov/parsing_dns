@@ -1,13 +1,12 @@
-import math
-
 import pymongo
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request
 from flask_paginate import Pagination, get_page_parameter
 from mongo import get_db
 
 app = Flask(__name__)
 app.debug = True
 db = get_db()
+
 
 @app.route('/')
 def index():
