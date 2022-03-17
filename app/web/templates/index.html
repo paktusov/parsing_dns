@@ -14,11 +14,19 @@
                 <div class="col-sm-8">
                     <b><a class="p-0 text-dark" target="_blank" href="{{ product.link }}">{{ product.name }}</a></b><br>
                     {{product.description}}<br>
-                    {{ product.history_price[-1][0] }} р. {% if product.full_price %}|  {{product.full_price}} р.{% endif %}<br>
-                    {{product.last_update.strftime("%Y.%m.%d %H:%M")}}
+                    <abbr data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true"
+                       title="
+                       {% for history_price in  product.history_price %}
+                            {{ history_price[1].strftime("%Y.%m.%d %H:%M") }}: {{ history_price[0] }} р. <br>
+                       {% endfor %}"
+                    >
+                        {{ product.history_price[-1][0] }} р.
+                    </abbr>
+                    {% if product.full_price %}|  {{product.full_price}} р.{% endif %}<br>
+                    {{product.last_update.strftime("%Y.%m.%d %H:%M")}}<br>
                 </div>
            </div>
     {% endfor %}
     <br>
-    {% include "paginator.html" %}
+    {{ pagination.links }}
 {% endblock %}

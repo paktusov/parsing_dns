@@ -1,3 +1,7 @@
 .removed {
     opacity: 0.1;
     }
+
+.removed:hover {
+    opacity: 1;
+}
