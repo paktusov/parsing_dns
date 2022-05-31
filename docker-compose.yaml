@@ -31,6 +31,14 @@ services:
     links:
       - app
 
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 2717:27017
+    volumes:
+      - ./db:/data/db
+
   redis:
     image: redis
     restart: always
