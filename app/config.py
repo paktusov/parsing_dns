@@ -46,9 +46,9 @@ class CelerySettings(BaseSettings):
 
 
 class SeleniumSettings(BaseSettings):
-    driver_name: str = 'firefox'
+    driver_name: str = 'chrome'
     command_executor: str = 'http://selenium:4444/wd/hub'
-    driver_arguments: list = ['-headless']
+    driver_arguments: list = ['--headless']
 
 
 telegram_config = TelegramNotificationSettings()

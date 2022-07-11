@@ -52,7 +52,7 @@ class DNSSpider(scrapy.Spider):
                     removed=False
                     )
 
-        next_page = response.css('button.pagination-widget__show-more-btn span::text').get()
+        next_page = response.css('button.pagination-widget__show-more-btn::text').get()
         if next_page is not None:
             self.page_num += 1
             next_page = f'https://www.dns-shop.ru/catalog/markdown/?p={self.page_num}'
